@@ -90,6 +90,6 @@ ENV/
 .ropeproject
 
 #pycharm files
+.idea/*
 .idea/
-.idea
-idea/
+.idea*
