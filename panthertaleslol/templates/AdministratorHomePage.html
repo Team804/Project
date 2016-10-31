@@ -1,13 +1,14 @@
-{# parameters- username: name of student logging in, myQuestions:list of questions student asked in session  #}
+{# parameters- username: login name, questQue: list of pending questions#}
 <html>
   <head>
-    <title>Student Home Page</title>
+    <title>Administrator Home Page</title>
     <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+<body>
 	<div class="pagetitle">
 		<div class="container">
-			<h1>Student Home Page</h1>
+			<h1>Professor Home Page</h1>
 		</div>
 	</div>
 		<div class="container">
@@ -39,8 +40,8 @@
 
 			<ul>
 				<li><a class = "current" href="">Home</a></li>
-				<li><a href="/studentQA">Submit A Question</a></li>
-				<li><a href="/FAQ">FAQs</a></li>
+				<li><a href="/questionqueue">Question Queue</a></li>
+				<li><a href="/FAQADMIN">FAQ Management</a></li>
 			</ul>
 		</div>
 	<div class="header">
@@ -48,26 +49,23 @@
 	</div>
 
 	<div class="sectiontitle">
-		<div class="container">
-			<h3>My Questions</h3>
+			<h2>Pending Questions</h2>
 			<ul>
-				{% for i in myQuestions %}
+				{% for i in questQue %}
 					{# TODO: add links to each question dialog page? #}
-				<li><a href="/studentQA">{{i}}</a></li>
+				<li><a href="/QuestionQueue">{{i}}</a></li>
 				{% endfor %}
 			</ul>
-		</div>
 	</div>
-
 
   	<div class="footer">
 		<div class="button">
-			<form action="/protologin" method="get">
+			<form action="/" method="get">
 				<button type="logout"> Logout </button>
 			</form>
 		</div>
 		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
-		<h6 id="group">Group Team 804</h6>
+		<h6 id="group">Group Team 804</h6>		
 	</div>
   </body>
 </html>

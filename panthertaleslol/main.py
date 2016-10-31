@@ -34,7 +34,7 @@ class StudentHome(webapp2.RequestHandler):
 
 class AdminHome(webapp2.RequestHandler):
     def get(self):
-        template= JINJA_ENVIRONMENT.get_template('templates/AdministatorHomePage.html')
+        template= JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
         self.response.write(template.render())
 
 class StudentQA(webapp2.RequestHandler):
