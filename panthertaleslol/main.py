@@ -47,7 +47,7 @@ class MainHandler(webapp2.RequestHandler):
             User(username='RegisterUsers', password='pass123'
                  , type='Administrator').put()
             User(username='SampleProfessor', password='uniquePass'
-                 , type='Professor').put()
+                 , type='Administrator').put()
             User(username='SampleStudent', password='anotherPass'
                  , type='Student').put()
 
