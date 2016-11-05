@@ -41,8 +41,19 @@ class User(ndb.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
+        # populate data store with mock info if it doesn't exist
+        users = User.query().fetch()
+        if not users:
+            User(username='RegisterUsers', password='pass123'
+                 , type='Administrator').put()
+            User(username='SampleProfessor', password='uniquePass'
+                 , type='Professor').put()
+            User(username='SampleStudent', password='anotherPass'
+                 , type='Student').put()
+
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         self.response.write(template.render())
+
 
 class StudentHome(webapp2.RequestHandler):
     def get(self):
@@ -85,6 +96,7 @@ app = webapp2.WSGIApplication([
     ('/adminhome', AdminHome),
     ('/studentQA', StudentQA),
     ('/submitfaq', SubmitFAQ),
+    ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN)
