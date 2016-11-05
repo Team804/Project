@@ -23,10 +23,21 @@ from google.appengine.ext import ndb
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
+class Question(ndb.Model):
+    isFAQ = ndb.BooleanProperty(required=True)
+    question = ndb.StringProperty(required=True)
+    answer = ndb.StringProperty()
+    date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
+    createdBy = ndb.StringProperty(required=True)
+    key= ndb.StringProperty(required=True)
+    nextkey = ndb.StringProperty()
+    prevkey = ndb.StringProperty()
+
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
     type = ndb.StringProperty(required=True)
+    questions = ndb.StructuredProperty(Question, repeated=True)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
