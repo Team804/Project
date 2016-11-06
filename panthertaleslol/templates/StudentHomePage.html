@@ -10,39 +10,14 @@
 			<h1>Student Home Page</h1>
 		</div>
 	</div>
-		<div class="container">
-			<style>
-				ul {
-					list-style-type: none;
-					margin: 0;
-					padding: 0;
-					overflow: hidden;
-					background-color: #333333;
-				}
-
-				li {
-					float: left;
-				}
-
-				li a {
-					display: block;
-					color: white;
-					text-align: center;
-					padding: 16px;
-					text-decoration: none;
-				}
-
-				li a:hover, .current {
-					background-color: #FFBD00;
-				}
-			</style>
-
-			<ul>
-				<li><a class = "current" href="">Home</a></li>
-				<li><a href="/studentQA">Submit A Question</a></li>
-				<li><a href="/FAQ">FAQs</a></li>
+	<div>
+		<ul class="navbar">
+				<li class="navitem"><a class = "current navlink" href="/">Home</a></li>
+				<li class="navitem"><a class="navlink" href="/studentQA">Submit A Question</a></li>
+				<li class="navitem"><a class="navlink" href="/FAQ">FAQs</a></li>
+				<li class="navitem"><a class="navlink" href="/">Logout</a></li>
 			</ul>
-		</div>
+	</div>		
 	<div class="header">
 		<h2>Hello {{username}}  </h2>
 	</div>
@@ -61,11 +36,6 @@
 
 
   	<div class="footer">
-		<div class="button">
-			<form action="/protologin" method="get">
-				<button type="logout"> Logout </button>
-			</form>
-		</div>
 		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
 		<h6 id="group">Group Team 804</h6>
 	</div>

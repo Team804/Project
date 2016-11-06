@@ -11,39 +11,14 @@
 			<h1>Professor Home Page</h1>
 		</div>
 	</div>
-		<div class="container">
-			<style>
-				ul {
-					list-style-type: none;
-					margin: 0;
-					padding: 0;
-					overflow: hidden;
-					background-color: #333333;
-				}
-
-				li {
-					float: left;
-				}
-
-				li a {
-					display: block;
-					color: white;
-					text-align: center;
-					padding: 16px;
-					text-decoration: none;
-				}
-
-				li a:hover, .current {
-					background-color: #FFBD00;
-				}
-			</style>
-
-			<ul>
-				<li><a class = "current" href="">Home</a></li>
-				<li><a href="/questionqueue">Question Queue</a></li>
-				<li><a href="/FAQADMIN">FAQ Management</a></li>
+		<div>
+			<ul class="navbar">
+				<li class="navitem"><a class = "current navlink" href="/">Home</a></li>
+				<li class="navitem"><a class="navlink" href="/questionqueue">View QuestionQueue</a></li>
+				<li class="navitem"><a class="navlink" href="/FAQADMIN">FAQs</a></li>
+				<li class="navitem"><a class="navlink" href="/">Logout</a></li>
 			</ul>
-		</div>
+		</div>	
 	<div class="header">
 		<h2>Hello {{username}}  </h2>
 	</div>
@@ -59,11 +34,6 @@
 	</div>
 
   	<div class="footer">
-		<div class="button">
-			<form action="/" method="get">
-				<button type="logout"> Logout </button>
-			</form>
-		</div>
 		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
 		<h6 id="group">Group Team 804</h6>		
 	</div>

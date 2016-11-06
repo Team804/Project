@@ -54,6 +54,9 @@ class MainHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         self.response.write(template.render())
 
+    def post(self):
+        pass
+
 
 class StudentHome(webapp2.RequestHandler):
     def get(self):

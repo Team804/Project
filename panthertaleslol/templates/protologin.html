@@ -1,38 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Login to FAQs</title>
+		<title>PantherTales: Login</title>
 		<link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
 	</head>
-	<body>
+	<body id="loginbody">
 		<div class="pagetitle">
 			<div class="container">
-				<h1>Login to view FAQs</h1>
+				<h1>PantherTales: Q and A Made Easy</h1>
 			</div>
+		</div>
+		<div>
+			<ul class="navbar">
+				<li class="navitem"><a class = "current navlink" href="/">Home</a></li>
+			</ul>
 		</div>
 		<div class="logintext">
-			<div class="container">
-				<p>
-          				<label>Username: </label>
-         				<input type = "text"
-                 			id = "username"/>
-        			</p>
-				<p>
-          				<label>Password: </label>
-          				<input type = "password"
-                 			id = "password"/>
-        			</p>
-			</div>
-		</div>
-		<div class="loginbuttons">
-			<div class="container">
-				<FORM METHOD="GET" ACTION="/studenthome">
-				<INPUT TYPE="submit" VALUE="Log in as Student">
-				</FORM>
-				<FORM METHOD="GET" ACTION="/adminhome">
-				<INPUT TYPE="submit" VALUE="Log in as Admin">
-				</FORM>
-			</div>
+				<form action='/' method='POST'>
+					<div class="loginitem"> Username: <input type='text' name='username'/></div>
+					<div class="loginitem"> Password: <input type='password' name='password'/></div>
+					<div class="loginitem"><input id="protobutton" type='submit' value='Login'/></div>
+				</form>
 		</div>
 		<div class="footer">
 			<div class="container">

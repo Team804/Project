@@ -6,6 +6,74 @@ html, body {
 	min-width: 800px;
 }
 
+#loginbody{
+	background-image: url("/images/loginbackground.jpg");
+	background-repeat: no-repeat;
+	background-position: bottom 175px left 75px;
+	
+}
+.navbar {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		background-color: #333333;
+		}
+
+.navitem {
+		float: left;
+		}
+				
+.navlink{
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 16px;
+		text-decoration: none;
+		}
+		
+.navlink:hover, .current {
+	background-color: #FFBD00;
+}
+						
+#protobutton:hover, .current{
+	background-color: #FFBD00;
+	cursor: pointer;
+	cursor: hand;
+}
+#protobutton{
+	position: relative;
+	left: 35px;
+	margin: auto;
+	background-color: #333333;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.loginitem{
+	padding: 20px 0;
+}
+
+.logintext{
+	font-size: 20px;
+	display: inline-block;
+    width: 175px;
+    height: 250px;
+    margin: auto;
+	padding: 20px 30px;
+    border: 2px outset;
+	position: relative;
+	top: 125px;
+	left: 600px;
+	background-color: #FFFFFF;
+	opacity: 1;
+}
+
 .container {
 	margin: 0 auto;
 	position: relative;
@@ -82,7 +150,7 @@ html, body {
 
 
 	margin: 0;
-	margin-top: 500px;
+	margin-top: 175px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	
