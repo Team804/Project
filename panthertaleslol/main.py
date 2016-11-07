@@ -21,7 +21,8 @@ import jinja2
 from google.appengine.ext import ndb
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-            loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
+            loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+
 
 class Question(ndb.Model):
     isFAQ = ndb.BooleanProperty(required=True)
@@ -33,31 +34,38 @@ class Question(ndb.Model):
     nextkey = ndb.StringProperty()
     prevkey = ndb.StringProperty()
 
+
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
     type = ndb.StringProperty(required=True)
     questions = ndb.StructuredProperty(Question, repeated=True)
 
+users = User.query().fetch()
+if not users:
+    User(username='SampleProf', password='uniquePass', type='A').put()
+    User(username='SampleStudent', password='anotherPass', type='S').put()
+
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
-        users = User.query().fetch()
-        if not users:
-            User(username='RegisterUsers', password='pass123'
-                 , type='Administrator').put()
-            User(username='SampleProfessor', password='uniquePass'
-                 , type='Administrator').put()
-            User(username='SampleStudent', password='anotherPass'
-                 , type='Student').put()
-
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         self.response.write(template.render())
 
     def post(self):
-        pass
-
-
+        username_from_form = self.request.get('username')
+        pass_from_form = self.request.get('password')
+        login = User.query(User.username == username_from_form).fetch()
+        if len(login) > 0:
+            user = login[0]
+            if user.password != pass_from_form:
+                self.redirect('/')
+            if user.type == 'A':
+                self.redirect('/adminhome')
+            if user.type == 'S':
+                self.redirect('/studenthome')
+        self.redirect('/')
 class StudentHome(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
