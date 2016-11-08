@@ -18,7 +18,7 @@ import webapp2
 import os
 import urllib
 import jinja2
-from google.appengine.ext import ndb 0
+from google.appengine.ext import ndb
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -31,35 +31,31 @@ class Question(ndb.Model):
     date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
     user = ndb.StructuredProperty(required=True)
     key = ndb.StringProperty(required=True)
+    next_question = ndb.StructuredProperty()
+    prev_question = ndb.StructuredProperty()
     next_question_key = ndb.StringProperty()
     prev_question_key = ndb.StringProperty()
 
-    def __init__(self, bIsFAQ, StrQuestion, StrAnswer, UserObj):
+    def __init__(self, bIsFAQ, StrQuestion, answer, UserObj):
         if UserObj.type is 'Admin':
-            isFAQ = bIsFAQ
+            self.isFAQ = bIsFAQ
         else:
-            isFAQ = False
-        question = StrQuestion
-        answer = StrAnswer
-        user = UserObj
+            self.isFAQ = False
+        self.question = StrQuestion
+        self.answer = answer
+        self.user = UserObj
     #   #generate self key (app engine)
 
-    def set_answer(self, StrAnswer):
-        answer = StrAnswer
+    def set_answer(self, answer):
+        self.answer = answer
 
-    def get_answer(self):
-        return answer
+    def set_followup(self, question):
+        self.next_question = question
+        self.next_question.prev_question = self
 
-    def set_followup(self, StrQuestionKey):
-        next_question_key = StrQuestionKey
-        # [Question with key == (next_question_key)].prev_question_key = this.key
-    def set_FAQ(self, bIsFAQ, StrCurrentUserKey):
-    #   if ([user corresponding to StrCurrentUserKey].type = 'Admin')
-    #       isFAQ = bIsFAQ
-
-
-
-
+    def set_FAQ(self, isFAQ, CurrentUser):
+        if CurrentUser.type is 'Admin' or 'Administrator':
+            self.isFAQ = isFAQ
 
 
 class User(ndb.Model):
@@ -68,20 +64,19 @@ class User(ndb.Model):
     type = ndb.StringProperty(required=True)
     questions = ndb.StructuredProperty(Question, repeated=True)
 
-    def __init__(self, StrUsername, StrPassword, StrType, questions):
-        username = StrUsername
-        password = StrPassword
-        type = StrType
+    def __init__(self, username, password, type):
+        self.username = username
+        self.password = password
+        self.type = type
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            User(username='SampleProfessor', password='pass123'
-                 , type='Administrator').put()
-            User(username='SampleStudent', password='pass234'
-                 , type='Student').put()
+            User(username='SampleProfessor', password='pass123', type='Administrator').put()
+            User(username='SampleStudent', password='pass234', type='Student').put()
 
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         print template
@@ -104,35 +99,42 @@ class MainHandler(webapp2.RequestHandler):
                 else:
                     self.redirect('/studenthome') #only other type is student
 
+
 class StudentHome(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
         self.response.write(template.render())
+
 
 class AdminHome(webapp2.RequestHandler):
     def get(self):
         template= JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
         self.response.write(template.render())
 
+
 class StudentQA(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentQAPage.html')
         self.response.write(template.render())
+
 
 class SubmitFAQ(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
         self.response.write(template.render())
 
+
 class QuestionQueue(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
         self.response.write(template.render())
 
+
 class FAQ(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
         self.response.write(template.render())
+
 
 class FAQADMIN(webapp2.RequestHandler):
     def get(self):
