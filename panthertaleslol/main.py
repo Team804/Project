@@ -18,7 +18,7 @@ import webapp2
 import os
 import urllib
 import jinja2
-from google.appengine.ext import ndb
+from google.appengine.ext import ndb 0
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -28,16 +28,49 @@ class Question(ndb.Model):
     question = ndb.StringProperty(required=True)
     answer = ndb.StringProperty()
     date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
-    createdBy = ndb.StringProperty(required=True)
-    key= ndb.StringProperty(required=True)
-    nextkey = ndb.StringProperty()
-    prevkey = ndb.StringProperty()
+    user = ndb.StructuredProperty(required=True)
+    key = ndb.StringProperty(required=True)
+    next_question_key = ndb.StringProperty()
+    prev_question_key = ndb.StringProperty()
+
+    def __init__(self, bIsFAQ, StrQuestion, StrAnswer, UserObj):
+        if UserObj.type is 'Admin':
+            isFAQ = bIsFAQ
+        else:
+            isFAQ = False
+        question = StrQuestion
+        answer = StrAnswer
+        user = UserObj
+    #   #generate self key (app engine)
+
+    def set_answer(self, StrAnswer):
+        answer = StrAnswer
+
+    def get_answer(self):
+        return answer
+
+    def set_followup(self, StrQuestionKey):
+        next_question_key = StrQuestionKey
+        # [Question with key == (next_question_key)].prev_question_key = this.key
+    def set_FAQ(self, bIsFAQ, StrCurrentUserKey):
+    #   if ([user corresponding to StrCurrentUserKey].type = 'Admin')
+    #       isFAQ = bIsFAQ
+
+
+
+
 
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
     type = ndb.StringProperty(required=True)
     questions = ndb.StructuredProperty(Question, repeated=True)
+
+    def __init__(self, StrUsername, StrPassword, StrType, questions):
+        username = StrUsername
+        password = StrPassword
+        type = StrType
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
