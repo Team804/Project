@@ -45,6 +45,13 @@ class User(ndb.Model):
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
+        users = User.query().fetch()
+        if not users:
+            User(username='SampleProfessor', password='uniquePass'
+                 , type='Administrator').put()
+            User(username='SampleStudent', password='anotherPass'
+                 , type='Student').put()
+
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         print template
         self.response.write(template.render())
