@@ -39,6 +39,7 @@ class User(ndb.Model):
     type = ndb.StringProperty(required=True)
     questions = ndb.StructuredProperty(Question, repeated=True)
 
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
@@ -52,12 +53,24 @@ class MainHandler(webapp2.RequestHandler):
                  , type='Student').put()
 
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
+        print template
         self.response.write(template.render())
 
     def post(self):
-        pass
-
-
+        entered_username = self.request.get('username')
+        entered_password = self.request.get('password')
+        users = User.query(User.username == entered_username).fetch()
+        if len(users) == 0:
+            self.redirect('/')
+        else:
+            current_user = users[0]
+            if entered_password != current_user.password:
+                self.redirect('/')
+            else:
+                if current_user.type == "Administrator":
+                    self.redirect('/adminhome')
+                else:
+                    self.redirect('/studenthome') #only other type is student
 class StudentHome(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
