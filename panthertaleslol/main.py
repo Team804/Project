@@ -47,9 +47,9 @@ class MainHandler(webapp2.RequestHandler):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            User(username='SampleProfessor', password='uniquePass'
+            User(username='SampleProfessor', password='pass123'
                  , type='Administrator').put()
-            User(username='SampleStudent', password='anotherPass'
+            User(username='SampleStudent', password='pass234'
                  , type='Student').put()
 
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
