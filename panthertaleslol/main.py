@@ -21,7 +21,8 @@ import jinja2
 from google.appengine.ext import ndb 0
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-            loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
+            loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+
 
 class Question(ndb.Model):
     isFAQ = ndb.BooleanProperty(required=True)
@@ -60,6 +61,7 @@ class Question(ndb.Model):
 
 
 
+
 class User(ndb.Model):
     username = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
@@ -71,25 +73,36 @@ class User(ndb.Model):
         password = StrPassword
         type = StrType
 
-
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            User(username='RegisterUsers', password='pass123'
+            User(username='SampleProfessor', password='pass123'
                  , type='Administrator').put()
-            User(username='SampleProfessor', password='uniquePass'
-                 , type='Administrator').put()
-            User(username='SampleStudent', password='anotherPass'
+            User(username='SampleStudent', password='pass234'
                  , type='Student').put()
 
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
+        print template
         self.response.write(template.render())
 
     def post(self):
-        pass
 
+        entered_username = self.request.get('username')
+        entered_password = self.request.get('password')
+        users = User.query(User.username == entered_username).fetch()
+        if len(users) == 0:
+            self.redirect('/')
+        else:
+            current_user = users[0]
+            if entered_password != current_user.password:
+                self.redirect('/')
+            else:
+                if current_user.type == "Administrator":
+                    self.redirect('/adminhome')
+                else:
+                    self.redirect('/studenthome') #only other type is student
 
 class StudentHome(webapp2.RequestHandler):
     def get(self):

@@ -12,6 +12,16 @@ html, body {
 	background-position: bottom 175px left 75px;
 	
 }
+
+#loginerror{
+	color: #ff0000;
+	background-color: #ffffff;
+	position: relative;
+	font-size: 20px;
+	top: 175px;
+	left: 575px;
+}
+
 .navbar {
 		list-style-type: none;
 		margin: 0;
