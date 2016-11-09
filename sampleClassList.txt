@@ -1,0 +1,46 @@
+ Bryan Adams	Adams, Bryan	ADAMS63	Student
+ Hussein Adams	Adams, Hussein	HRASHEED	Student
+ Arham Akbar	Akbar, Arham	ARAKBAR	Student
+ Musaed Alsuwaidan	Alsuwaidan, Musaed	MUSAED	Student
+ Matthew Ausloos	Ausloos, MatthewMatthew Ausloos 	MAUSLOOS	Student
+ Drew Beatty	Beatty, Drew	DABEATTY	Student
+ Eric Belter	Belter, Eric	EMBELTER	Student
+ Dustin Bialoszynski	Bialoszynski, Dustin	BIALOSZ2	Student
+ William Bigari	Bigari, William	WJBIGARI	Student
+ Ian Clark	Clark, IanIan Clark 	IMCLARK	Student
+ Edward Dickenson	Dickenson, Edward	ELD	Student
+ Isra Elsharef	Elsharef, IsraIsra Elsharef 	ISRA	Student
+ Cory Engdahl	Engdahl, Cory	CENGDAHL	Student
+ Jennifer Fox	Fox, JenniferJennifer Fox 	JRFOX	Student
+ Zhuoran Hao	Hao, Zhuoran	ZHUORHAO	Instructor
+ Steven Hawkins	Hawkins, Steven	HAWKIN57	Student
+ Alexander Hess	Hess, Alexander	HESSAJ	Student
+ Joseph Jackson	Jackson, JosephJoseph Jackson 	JACKS429	Student
+ Johnathan Jens	Jens, Johnathan	JDJENS	Student
+ Aditya Kathera	Kathera, AdityaAditya Kathera 	AKATHERA	Student
+ Damian Kendzior	Kendzior, DamianDamian Kendzior 	DHK	Student
+ Tanawat Khunlertkit	Khunlertkit, Tanawat	TANAWAT	Instructor
+ Jacob Kilgore	Kilgore, Jacob	JKILGORE	Student
+ Titus Kim	Kim, TitusTitus Kim 	TITUSKIM	Student
+ Matthew Klabunde	Klabunde, MatthewMatthew Klabunde 	KLABUND3	Student
+ Heather Noble	Noble, HeatherHeather Noble 	HMNOBLE	Student
+ Peter Panos	Panos, PeterPeter Panos 	PCPANOS	Student
+ Usman Qureshi	Qureshi, UsmanUsman Qureshi 	UQURESHI	Student
+ Samuel Rasmussen	Rasmussen, SamuelSamuel Rasmussen 	RASMU235	Student
+ Kyle Reierson	Reierson, KyleKyle Reierson 	REIERSO3	Student
+ Zachary Resler	Resler, ZacharyZachary Resler 	ZJRESLER	Student
+ Jayson Rock	Rock, Jayson	ROCK	Instructor
+ Dalton Schmidt	Schmidt, DaltonDalton Schmidt 	SCHMI749	Student
+ Joshua Schmidt	Schmidt, Joshua	SCHMI789	Student
+ Austin Schmitz	Schmitz, Austin	SCHMI799	Student
+ Jay Soni	Soni, Jay	JAYSSONI	Student
+ Evan Timmermann	Timmermann, Evan	TIMMERM7	Student
+ Kyle VanDaalwyk	VanDaalwyk, Kyle	VANDAAL2	Student
+ Swfeng Vang	Vang, Swfeng	SWFENG	Student
+ Sean Waiss	Waiss, SeanSean Waiss 	STWAISS	Student
+ Alexander Weber	Weber, Alexander	WEBER99	Student
+ George Wysor	Wysor, GeorgeGeorge Wysor 	GJWYSOR	Student
+ Jingtao Yang	Yang, JingtaoJingtao Yang 	JINGTAO	Student
+ Nounee Yang	Yang, NouneeNounee Yang 	NOUNEE	Student
+ Matthew Young	Young, Matthew	MWYOUNG	Student
+ Ronald Zalewski	Zalewski, Ronald	ZALEWSK5	Student
