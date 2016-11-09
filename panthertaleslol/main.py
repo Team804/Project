@@ -29,10 +29,10 @@ class Question(ndb.Model):
     question = ndb.StringProperty(required=True)
     answer = ndb.StringProperty()
     date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
-    user = ndb.StructuredProperty(required=True)
+    #user = ndb.StructuredProperty(required=True)
     key = ndb.StringProperty(required=True)
-    next_question = ndb.StructuredProperty()
-    prev_question = ndb.StructuredProperty()
+    #next_question = ndb.StructuredProperty()
+    #prev_question = ndb.StructuredProperty()
     next_question_key = ndb.StringProperty()
     prev_question_key = ndb.StringProperty()
 
@@ -50,8 +50,10 @@ class Question(ndb.Model):
         self.answer = answer
 
     def set_followup(self, question):
-        self.next_question = question
-        self.next_question.prev_question = self
+#disliked structured properties so will need to go with key methodology after all
+        #self.next_question = question
+        #self.next_question.prev_question = self
+        pass
 
     def set_FAQ(self, isFAQ, CurrentUser):
         if CurrentUser.type is 'Admin' or 'Administrator':
@@ -64,10 +66,11 @@ class User(ndb.Model):
     type = ndb.StringProperty(required=True)
     questions = ndb.StructuredProperty(Question, repeated=True)
 
-    def __init__(self, username, password, type):
-        self.username = username
-        self.password = password
-        self.type = type
+#this threw some stuff out of whack so commented it out for now which will throw some tests off
+    # def __init__(self, username, password, type):
+    #     self.username = username
+    #     self.password = password
+    #     self.type = type
 
 
 class MainHandler(webapp2.RequestHandler):
