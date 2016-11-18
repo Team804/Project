@@ -14,63 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from user import Student
+from user import Professor
+from user import User
+import logging
 import webapp2
 import os
-import urllib
 import jinja2
-from google.appengine.ext import ndb
+
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
-
-
-class Question(ndb.Model):
-    isFAQ = ndb.BooleanProperty(required=True)
-    question = ndb.StringProperty(required=True)
-    answer = ndb.StringProperty()
-    date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
-    #user = ndb.StructuredProperty(required=True)
-    key = ndb.StringProperty(required=True)
-    #next_question = ndb.StructuredProperty()
-    #prev_question = ndb.StructuredProperty()
-    next_question_key = ndb.StringProperty()
-    prev_question_key = ndb.StringProperty()
-
-    def __init__(self, bIsFAQ, StrQuestion, answer, UserObj):
-        if UserObj.type is 'Admin':
-            self.isFAQ = bIsFAQ
-        else:
-            self.isFAQ = False
-        self.question = StrQuestion
-        self.answer = answer
-        self.user = UserObj
-    #   #generate self key (app engine)
-
-    def set_answer(self, answer):
-        self.answer = answer
-
-    def set_followup(self, question):
-#disliked structured properties so will need to go with key methodology after all
-        #self.next_question = question
-        #self.next_question.prev_question = self
-        pass
-
-    def set_FAQ(self, isFAQ, CurrentUser):
-        if CurrentUser.type is 'Admin' or 'Administrator':
-            self.isFAQ = isFAQ
-
-
-class User(ndb.Model):
-    username = ndb.StringProperty(required=True)
-    password = ndb.StringProperty(required=True)
-    type = ndb.StringProperty(required=True)
-    questions = ndb.StructuredProperty(Question, repeated=True)
-
-#this threw some stuff out of whack so commented it out for now which will throw some tests off
-    # def __init__(self, username, password, type):
-    #     self.username = username
-    #     self.password = password
-    #     self.type = type
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -78,8 +32,8 @@ class MainHandler(webapp2.RequestHandler):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            User(username='SampleProfessor', password='pass123', type='Administrator').put()
-            User(username='SampleStudent', password='pass234', type='Student').put()
+            Professor(user_name='SampleProfessor', password='pass123').put()
+            Student(user_name='SampleStudent', password='pass234').put()
 
         template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
         print template
@@ -89,7 +43,8 @@ class MainHandler(webapp2.RequestHandler):
 
         entered_username = self.request.get('username')
         entered_password = self.request.get('password')
-        users = User.query(User.username == entered_username).fetch()
+        users = User.query(User.user_name == entered_username).fetch()
+        logging.info(users)
         if len(users) == 0:
             self.redirect('/')
         else:
@@ -97,10 +52,10 @@ class MainHandler(webapp2.RequestHandler):
             if entered_password != current_user.password:
                 self.redirect('/')
             else:
-                if current_user.type == "Administrator":
+                if current_user is Professor:
                     self.redirect('/adminhome')
                 else:
-                    self.redirect('/studenthome') #only other type is student
+                    self.redirect('/studenthome') #only other user type is student
 
 
 class StudentHome(webapp2.RequestHandler):

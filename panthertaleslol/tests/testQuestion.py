@@ -1,16 +1,17 @@
 import unittest
-from panthertaleslol.main import Question
-from panthertaleslol.main import User
+from panthertaleslol.question import Question
+from panthertaleslol.user import Professor
+from panthertaleslol.user import Student
 
 class TestQuestion(unittest.TestCase):
     def setUp(self):
-        self.student = User(username='student', password='password', type='Student')
-        self.admin = User(username='admin', password='password', type='Admin')
+        # put some stuff in database to tie question objects to
+        student_key = Student(username='student', password='password').put()
+        prof_key = Professor(username='professor', password='password').put()
 
     def tearDown(self):
-        #del self.faq_as_student
-        #del self.faq_as_admin
-        pass
+        self.student_key.delete()
+        self.prof_key.delete()
 
     def test_post_FAQ(self):
         self.faq_as_student = Question(bIsFAQ=True, StrQuestion='?', answer="aaaaaaa", UserObj=self.student)
