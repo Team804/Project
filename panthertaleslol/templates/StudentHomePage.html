@@ -11,17 +11,20 @@
 		</div>
 	</div>
 	<div>
-		<ul class="navbar">
-				<li class="navitem"><a class = "current navlink" href="/">Home</a></li>
-				<li class="navitem"><a class="navlink" href="/studentQA">Submit A Question</a></li>
-				<li class="navitem"><a class="navlink" href="/FAQ">FAQs</a></li>
-				<li class="navitem"><a class="navlink" href="/">Logout</a></li>
+			<ul class="navbar">
+				<li class="navitem">
+					<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
+				<li class="navitem">
+					<form action="/studentQA" method="GET"> <input class="navlink" type='submit' value='Submit A Question'> </form></li>
+				<li class="navitem">
+					<form action="/FAQ" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
+				<li class="navitem">
+					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
 	</div>		
 	<div class="header">
-		<h2>Hello {{username}}  </h2>
+		<h2>Hello {{ username }}  </h2>
 	</div>
-
 	<div class="sectiontitle">
 		<div class="container">
 			<h3>My Questions</h3>

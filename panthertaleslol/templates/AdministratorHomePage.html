@@ -11,14 +11,18 @@
 			<h1>Professor Home Page</h1>
 		</div>
 	</div>
-		<div>
-			<ul class="navbar">
-				<li class="navitem"><a class = "current navlink" href="/">Home</a></li>
-				<li class="navitem"><a class="navlink" href="/questionqueue">View QuestionQueue</a></li>
-				<li class="navitem"><a class="navlink" href="/FAQADMIN">FAQs</a></li>
-				<li class="navitem"><a class="navlink" href="/">Logout</a></li>
-			</ul>
-		</div>	
+	<div>
+		<ul class="navbar">
+			<li class="navitem">
+				<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
+			<li class="navitem">
+				<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='View QuestionQueue'> </form></li>
+			<li class="navitem">
+				<form action="/FAQADMIN" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
+			<li class="navitem">
+				<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
+		</ul>
+	</div>	
 	<div class="header">
 		<h2>Hello {{username}}  </h2>
 	</div>

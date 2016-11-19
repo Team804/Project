@@ -21,83 +21,130 @@ import logging
 import webapp2
 import os
 import jinja2
+from webapp2_extras import sessions
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
+class BaseHandler(webapp2.RequestHandler):
+    def dispatch(self):
+        self.session_store = sessions.get_store(request=self.request)
 
-class MainHandler(webapp2.RequestHandler):
+        try:
+            webapp2.RequestHandler.dispatch(self)
+        finally:
+            return self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def session(self):
+        return self.session_store.get_session()
+
+class MainHandler(BaseHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
             Professor(user_name='SampleProfessor', password='pass123').put()
             Student(user_name='SampleStudent', password='pass234').put()
-
-        template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
-        print template
-        self.response.write(template.render())
+        if 'username' in self.session and self.session['username']:
+            username = self.session['username']
+            users = User.query(User.user_name == username).fetch()
+            user = users[0]
+            if user is Professor:
+                self.redirect('/adminhome')
+            else:
+                self.redirect('/studenthome')
+        else:
+            template = JINJA_ENVIRONMENT.get_template('templates/protologin.html')
+            self.response.write(template.render())
 
     def post(self):
-
-        entered_username = self.request.get('username')
-        entered_password = self.request.get('password')
-        users = User.query(User.user_name == entered_username).fetch()
-        logging.info(users)
-        if len(users) == 0:
-            self.redirect('/')
+        if 'username' in self.session and self.session['username']:
+            username = self.session['username']
+            profs = Professor.query(Professor.user_name == username).fetch()
+            if profs:
+                self.redirect('/adminhome')
+            else:
+                self.redirect('/studenthome')
         else:
-            current_user = users[0]
-            if entered_password != current_user.password:
+            entered_username = self.request.get('username')
+            entered_password = self.request.get('password')
+            users = User.query(User.user_name == entered_username).fetch()
+            logging.info(users)
+            if not users:
                 self.redirect('/')
             else:
-                if current_user is Professor:
-                    self.redirect('/adminhome')
+                profs = Professor.query(Professor.user_name == entered_username).fetch()
+                if profs:
+                    current_user = profs[0]
+                    if entered_password != current_user.password:
+                        self.redirect('/')
+                    else:
+                        self.session['username'] = entered_username
+                        self.redirect('/adminhome')
                 else:
-                    self.redirect('/studenthome') #only other user type is student
+                    students = Student.query(Student.user_name == entered_username).fetch()
+                    current_user = students[0]
+                    if entered_password != current_user.password:
+                        self.redirect('/')
+                    else:
+                        self.session['username'] = entered_username
+                        self.redirect('/studenthome')
 
-
-class StudentHome(webapp2.RequestHandler):
+class StudentHome(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
         self.response.write(template.render())
 
 
-class AdminHome(webapp2.RequestHandler):
+class AdminHome(BaseHandler):
     def get(self):
         template= JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
         self.response.write(template.render())
 
 
-class StudentQA(webapp2.RequestHandler):
+class StudentQA(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentQAPage.html')
         self.response.write(template.render())
 
 
-class SubmitFAQ(webapp2.RequestHandler):
+class SubmitFAQ(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
         self.response.write(template.render())
 
 
-class QuestionQueue(webapp2.RequestHandler):
+class QuestionQueue(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
         self.response.write(template.render())
 
 
-class FAQ(webapp2.RequestHandler):
+class FAQ(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
         self.response.write(template.render())
 
 
-class FAQADMIN(webapp2.RequestHandler):
+class FAQADMIN(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
         self.response.write(template.render())
+
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        if 'username' in self.session:
+            self.session.pop('username')
+        self.redirect('/')
+
+config = {
+    'webapp2_extras.sessions': {
+            'secret_key': 'my-secret-key'
+        }
+}
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -108,5 +155,6 @@ app = webapp2.WSGIApplication([
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
-    ('/FAQADMIN', FAQADMIN)
-], debug=True)
+    ('/FAQADMIN', FAQADMIN),
+    ('/logout', LogoutHandler)
+], debug=True, config=config)
