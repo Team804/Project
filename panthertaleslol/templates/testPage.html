@@ -1,0 +1,32 @@
+{# parameters- test_results: unfiltered unnitest.TestResult output   #}
+<html>
+  <head>
+    <title>Test Page</title>
+    <link href="stylesheets/testPageStyle.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    {% if test_results %}
+        <table id='test_table'>
+            <tr>
+                <th>Test Class</th>
+                <th>Test Case</th>
+                <th>Result</th>
+            </tr>
+            {% for each_test in test_results %}
+                <td>{{each_test}}</td>
+            {% endfor %}
+
+
+        </table>
+    {% endif %}
+        <form action='/testpage' method='GET'>
+            <input type='submit' value="Re-Run Tests">
+        </form>
+
+
+  	<div class="footer">
+		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
+		<h6 id="group">Group Team 804</h6>
+	</div>
+  </body>
+</html>
