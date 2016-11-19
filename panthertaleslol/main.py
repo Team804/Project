@@ -17,6 +17,7 @@
 from user import Student
 from user import Professor
 from user import User
+from tests.testTests import TestTests
 import logging
 import webapp2
 import os
@@ -140,11 +141,20 @@ class LogoutHandler(BaseHandler):
             self.session.pop('username')
         self.redirect('/')
 
+
+class TestPage(webapp2.RequestHandler):
+    def get(self):
+        testing_class = TestTests()
+        test_results = testing_class.run_all_tests()
+        template = JINJA_ENVIRONMENT.get_template('templates/testPage.html')
+        self.response.write(template.render(test_results))
+
 config = {
     'webapp2_extras.sessions': {
             'secret_key': 'my-secret-key'
         }
 }
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -156,5 +166,8 @@ app = webapp2.WSGIApplication([
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
-    ('/logout', LogoutHandler)
+    ('/logout', LogoutHandler),
+    ('/testpage', TestPage)
 ], debug=True, config=config)
+
+
