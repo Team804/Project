@@ -12,21 +12,24 @@ class User(polymodel.PolyModel):
     password = ndb.StringProperty(required=True)
 
     def change_password(self, newPassword):
-        return False
+        pass
     # method to check uniqueness of setting user names
     def set_user_name(self, userName):
-        return ""
+        pass
 
 class Student(User):
     # get all the student's submitted questions
+    @property
     def get_all_questions(self):
         return Question.query(ancestor=self.key).fetch()
 
     # method to get unseen questions
+    @property
     def get_all_unseen_questions(self, items):
         return Question.query(Question.unSeen(True), ancestor=self.key).fetch()
 
 
 class Professor(User):
-    def get_questions_in_queue(self):
-        return ""
+    @property
+    def load_queue(self):
+        return Question.query().fetch()

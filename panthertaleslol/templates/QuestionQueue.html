@@ -1,4 +1,4 @@
-
+{# parameters- user: user object and QQTAB: variable containing currently active Queue Tab #}
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -6,11 +6,10 @@
 		<link href = "stylesheets/style.css" rel = "stylesheet" type = "text/css"/>
 	</head>
 	<body>
-		<div class = "questionque">
-			<div class = "pagetitle">
-				<div class = "container">
-					<h1>My Question Queue</h1>
-				</div>
+		<div class = "pagetitle">
+			<div class = "container">
+				<h1>My Question Queue</h1>
+			</div>
 		</div>
 		<div>
 			<ul class="navbar">
@@ -24,75 +23,25 @@
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
 		</div>	
-			
-			<br>
-			<br>
-
-			<div class = "unanswered">
-				<div class = "container">
-					<h3><u>Unanswered Questions</u></h3>	
-				</div>
-
-				<br>
-
-				<div class = "unansweredquestions">
-					<h5>John Smith</h5>
-					<ul>
-						<li>What time does class start?</li>
-						<h5>Answer</h5>
-						<textarea rows="5" cols="50">Type in answer</textarea>
-						<p>
-						<button type="button"> Submit </button>
-						<button type="button"> Submit to FAQ </button>
-						</p>
-					</ul>
-				</div>
-
-				<br>
-
-				<div class = "unansweredquestions">
-					<h5>Sally Sue</h5>
-					<ul>
-						<li>How many letters in the alphabet?</li>
-						<h5>Answer</h5>
-						<textarea rows="5" cols="50">Type in answer</textarea>
-						<p>
-						<button type="button"> Submit </button>
-						<button type="button"> Submit to FAQ </button>
-						</p>
-					</ul>
-				</div>
-			</div>
-
-			<br>
-
-			<div class = "answered">
-				<div class = "container">
-					<h3><u>Answered Questions</u></h3>
-				</div>
-
-				<br>
-		
-				<div class = "answeredquestions">
-					<h5>Bill Morgan</h5>
-					<ul>
-						<li>How many degrees is a right angle?</li>
-						<p><b>Answer:</b> 90 Degrees</p>
-						<button type="button"> Edit </button>
-					</ul>
-				</div>
-				
-				<br>
-
-				<div class = "answeredquestions">
-					<h5>Bob Gibson</h5>
-					<ul>
-						<li>When did Harambe die?</li>
-						<p><b>Answer:</b> May 28th, 2016</p>
-						<button type="button"> Edit </button>
-					</ul>
-				</div>
-			</div>
+		<div class = "QQDIV">
+		<ul class = 'QBOX'> 
+				<li class = 'current QITEM'>
+					<input type='radio' id='NewQ' name='Qradio' value=1 checked><label for="NewQ">New Questions</label></li>
+				<li class = 'QITEM'>
+					<input type='radio' id='RecentQ' name='Qradio' value=2><label for='RecentQ'>Recent Questions</label></li>
+				<li class = 'QITEM'>
+					<input type='radio' id='ByStudent' name='Qradio' value=3><label for='ByStudent'>By Student</label></li>
+		</ul>
+		<div class ='NewDiv'>
+		</div>
+		<div class ='RecentDiv'>
+		</div>
+		<div class ='BSDiv'>
+		</div>
+		</div>
+		<div class="footer">
+			<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
+			<h6 id="group">Group Team 804</h6>
 		</div>
 	</body>
 </html>		

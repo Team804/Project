@@ -22,6 +22,62 @@ html, body {
 	left: 575px;
 }
 
+input[type=radio] {
+    display:none; 
+}
+
+input[type=radio] + label {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 16px;
+	text-decoration: none;
+	background: #333333;
+	border: none;
+	font-size: 16px;
+}
+
+input[type=radio]:checked + label { 
+    background-color:#FFBD00;
+}
+
+.QQDIV{
+	width: 1160px;
+	top: 125px;
+	height: 600px;
+	position: relative;
+    margin: auto;
+    border: 2px outset;
+	}
+		
+.QBOX{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333333
+	}
+	
+.QITEM{
+	float: left;
+	}
+	
+.QBUTTON{
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 16px;
+	text-decoration: none;
+	background: #333333;
+	border: none;
+	font-size: 16px;
+}
+	
+.QBUTTON:hover, .current {
+	background-color: #FFBD00;
+	overflow: 16px
+}	
+	
 .navbar {
 		list-style-type: none;
 		margin: 0;

@@ -49,9 +49,8 @@ class MainHandler(BaseHandler):
             Student(user_name='SampleStudent', password='pass234').put()
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
-            users = User.query(User.user_name == username).fetch()
-            user = users[0]
-            if user is Professor:
+            profs = Professor.query(Professor.user_name == username).fetch()
+            if profs:
                 self.redirect('/adminhome')
             else:
                 self.redirect('/studenthome')
@@ -118,8 +117,21 @@ class SubmitFAQ(BaseHandler):
 
 class QuestionQueue(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
-        self.response.write(template.render())
+        if 'username' in self.session and self.session['username']:
+            username = self.session['username']
+            user = Professor.query(Professor.user_name == username).fetch()
+            qradio = self.request.get('Qradio')
+            if not qradio:
+                qradio = 1
+            if user:
+                user = user[0]
+                template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
+                self.response.write(template.render({
+                    'user': user,
+                    'QQTAB': qradio
+                }))
+        else:
+            self.redirect('/')
 
 
 class FAQ(BaseHandler):
