@@ -37,4 +37,4 @@ class TestUser(unittest.TestCase):
 
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestUser)
-unittest.TextTestRunner(verbosity=2).run(suite)
+suite_results = unittest.TextTestRunner(verbosity=2).run(suite)

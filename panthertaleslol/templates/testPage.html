@@ -1,0 +1,37 @@
+{# parameters- test_results: unfiltered unnitest.TestResult output   #}
+<html>
+  <head>
+    <title>Test Page</title>
+    <link href="http://www.w3schools.com/lib/w3.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    {% if test_results %}
+        <table class="w3-border w3-table w3-small w3-responsive w3-bordered" text-align = center>
+            <tr class = "w3-Black w3-margin">
+                <th class = "w3-third"><h5>Test Class</h5></th>
+                <th class = "w3-third"><h5>Test Case</h5></th>
+                <th class = "w3-third"><h5>Result</h5></th>
+            </tr>
+            {% for each_test in test_results %}
+            <tr class = "w3-margin">
+                <td class = "w3-third">{{each_test.test_class}} </td>
+                <td class = "w3-third">{{each_test.test_name}}</td>
+                {% if each_test.test_result == True %}
+                   <td class = "w3-third w3-green" >Good</td>
+                {% else %}
+                    <td class = "w3-third w3-red" >Error</td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+        <form action='/testpage' method='GET'>
+            <button class = "w3-ripple w3-button w3-round w3-hover-white" type='submit'><b>Re-Run Tests</b></button>
+        </form>
+  	<div class="footer">
+		<h6>&copy; University of Wisconsin Milwaukee</h6>
+		<h6>Group Team 804</h6>
+	</div>
+  </body>
+</html>

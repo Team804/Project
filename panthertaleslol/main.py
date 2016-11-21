@@ -14,15 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from user import Student
-from user import Professor
-from user import User
 import logging
-import webapp2
 import os
+
 import jinja2
+import webapp2
 from webapp2_extras import sessions
 
+from testTests import TestTests
+from user import Professor
+from user import Student
+from user import User
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -152,11 +154,24 @@ class LogoutHandler(BaseHandler):
             self.session.pop('username')
         self.redirect('/')
 
+
+class TestPage(webapp2.RequestHandler):
+    def get(self):
+        testing_class = TestTests()
+        testing_class.list_results_all[:] = []
+        testing_class.run_all_tests()
+        logging.info(testing_class.test_results.testsRun)
+        template = JINJA_ENVIRONMENT.get_template('templates/testPage.html')
+        logging.info(len(testing_class.list_results_all))
+        self.response.write(template.render({'test_results':testing_class.list_results_all}))
+
+
 config = {
     'webapp2_extras.sessions': {
             'secret_key': 'my-secret-key'
         }
 }
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -168,5 +183,8 @@ app = webapp2.WSGIApplication([
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
-    ('/logout', LogoutHandler)
+    ('/logout', LogoutHandler),
+    ('/testpage', TestPage)
 ], debug=True, config=config)
+
+
