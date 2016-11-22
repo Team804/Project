@@ -130,15 +130,28 @@ class QuestionQueue(BaseHandler):
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             user = Professor.query(Professor.user_name == username).fetch()
-            qradio = self.request.get('Qradio')
-            if not qradio:
-                qradio = 1
+            qqtab=1
+            if self.request.get('NewQ'):
+                qqtab=1
+            elif self.request.get('RecentQ'):
+                qqtab=2
+            elif self.request.get('ByStudent'):
+                qqtab=3
             if user:
                 user = user[0]
+                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                              answer='He wont even invite us to Thanksgiving :(')
+                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?')
+                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?')
                 template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
                 self.response.write(template.render({
                     'user': user,
-                    'QQTAB': qradio
+                    'q1s': q1.question,
+                    'q2s': q2.question,
+                    'q3s': q3.question,
+                    'QQTAB': qqtab
                 }))
         else:
             self.redirect('/')

@@ -24,20 +24,41 @@
 			</ul>
 		</div>	
 		<div class = "QQDIV">
-		<ul class = 'QBOX'> 
-				<li class = 'current QITEM'>
-					<input type='radio' id='NewQ' name='Qradio' value=1 checked><label for="NewQ">New Questions</label></li>
+		<form action='/questionqueue' method='GET'>
+			<ul class = 'QBOX'> 
 				<li class = 'QITEM'>
-					<input type='radio' id='RecentQ' name='Qradio' value=2><label for='RecentQ'>Recent Questions</label></li>
+					<input type='submit' class={% if QQTAB == 1 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='NewQ' value='New Questions'></li>
 				<li class = 'QITEM'>
-					<input type='radio' id='ByStudent' name='Qradio' value=3><label for='ByStudent'>By Student</label></li>
-		</ul>
-		<div class ='NewDiv'>
-		</div>
-		<div class ='RecentDiv'>
-		</div>
-		<div class ='BSDiv'>
-		</div>
+					<input type='submit' class={% if QQTAB == 2 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='RecentQ' value='Recent Questions'></li>
+				<li class = 'QITEM'>
+					<input type='submit' class={% if QQTAB == 3 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='ByStudent' value='By Student'></li>
+			</ul>
+			</form>
+			{% if QQTAB == 1 %}
+			<div><ul>
+			<li>{{ q1s }}</li>
+			<li><textarea rows="4" cols="50"></textarea></li>
+			<li><input type='submit'></li>
+			</ul></div>
+			{% elif QQTAB ==2 %}
+			<div><ul>
+			<li>{{ q1s }}</li>
+			<li><textarea rows="4" cols="50"></textarea></li>
+			<li><input type='submit'></li>
+			<li>{{ q2s }}</li>
+			<li><textarea rows="4" cols="50"></textarea></li>
+			<li><input type='submit'></li>			
+			</ul></div>
+			{% else %}
+			<div><ul>
+			<li>Student1: {{ q1s }}</li>
+			<li><textarea rows="4" cols="50"></textarea></li>
+			<li><input type='submit'></li>			
+			<li>Student2: {{ q2s }}</li>
+			<li><textarea rows="4" cols="50"></textarea></li>
+			<li><input type='submit'></li>
+			</ul></div>
+			{% endif %}
 		</div>
 		<div class="footer">
 			<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
@@ -45,9 +66,3 @@
 		</div>
 	</body>
 </html>		
-						
-						
-						
-					
-				
-	

@@ -22,25 +22,6 @@ html, body {
 	left: 575px;
 }
 
-input[type=radio] {
-    display:none; 
-}
-
-input[type=radio] + label {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 16px;
-	text-decoration: none;
-	background: #333333;
-	border: none;
-	font-size: 16px;
-}
-
-input[type=radio]:checked + label { 
-    background-color:#FFBD00;
-}
-
 .QQDIV{
 	width: 1160px;
 	top: 125px;
