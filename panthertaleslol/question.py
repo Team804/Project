@@ -2,6 +2,7 @@
 
 from google.appengine.ext import ndb
 
+
 class Question(ndb.Model):
     isFAQ = ndb.BooleanProperty(required=True)
     answer = ndb.StringProperty() #response field written straight to question
