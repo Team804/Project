@@ -123,16 +123,17 @@ class TestStudent(unittest.TestCase):
 class TestQuestion(unittest.TestCase):
     def setUp(self):
         # put some stuff in database to tie question objects to
-        student_key = Student(username='student', password='password').put()
-        prof_key = Professor(username='professor', password='password').put()
+        student_key = Student(user_name='student', password='password')
+        prof_key = Professor(user_name='professor', password='password')
 
     def tearDown(self):
-        self.student_key.delete()
-        self.prof_key.delete()
+        # self.student_key.delete()
+        # self.prof_key.delete()
+        pass
 
     def test_post_FAQ(self):
-        self.faq_as_student = Question(isFAQ=True, question='?', answer="aaaaaaa", UserObj=self.student)
-        self.faq_as_admin = Question(isFAQ=True, question='???', answer="BbBbBb", UserObj=self.admin)
+        self.faq_as_student = Question(isFAQ=True, question='?', answer="aaaaaaa")
+        self.faq_as_admin = Question(isFAQ=True, question='???', answer="BbBbBb")
         self.assertFalse(self.faq_as_student.isFAQ)
         self.assertTrue(self.faq_as_admin.isFAQ)
         self.assertEqual('?', self.faq_as_student.question)
@@ -143,8 +144,8 @@ class TestQuestion(unittest.TestCase):
         del self.faq_as_admin
 
     def test_set_FAQ(self):
-        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer", UserObj=self.student)
-        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER", UserObj=self.admin)
+        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer")
+        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER")
         self.assertFalse(self.faq_as_student.isFAQ)
         self.assertFalse(self.faq_as_admin.isFAQ)
         self.faq_as_student.set_FAQ(isFAQ=True)  # , self.faq_as_student
@@ -155,8 +156,8 @@ class TestQuestion(unittest.TestCase):
         del self.faq_as_admin
 
     def test_set_answer(self):
-        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer", UserObj=self.student)
-        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER", UserObj=self.admin)
+        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer")
+        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER")
         self.faq_as_student.set_answer("")
         self.faq_as_admin.set_answer("   .   ")
         self.assertEqual("", self.faq_as_student.answer)
@@ -303,7 +304,7 @@ class TestProfessor(unittest.TestCase):
         self.assertIsNone(self.professor.load_queue())
 
     def test_question_queue_adding(self):
-        Question(isFAQ=False, question="question").put()
+        Question(isFAQ=False, question="question")
         self.assertIsNotNone(self.professor.load_queue())
 
 
