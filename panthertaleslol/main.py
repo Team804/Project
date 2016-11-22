@@ -25,6 +25,8 @@ import os
 import jinja2
 from testTests import TestTests
 from webapp2_extras import sessions
+import csv
+import StringIO
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -261,12 +263,36 @@ class RegisterStudents(BaseHandler):
         self.redirect('/')
 
     def parse_info(self, input_list):
-        num_students = input_list.count('/n')
-        input_list = input_list.replace('/n', '')
-        student_list = input_list.replace(' ', '').split(',')
-        for i in range(len(student_list)):
-            if i%3 == 0:
 
+        input_list = input_list.replace(' ','')
+
+        while len(input_list) > 5:
+
+            pos = input_list.find(',')
+            l_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(l_name)
+
+            pos = input_list.find(',')
+            f_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(f_name)
+
+            pos = input_list.find(',')
+            u_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(u_name)
+
+            pos = input_list.find('\n')
+            type = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(type)
+
+            # add user
+            if type == "Instructor":
+                Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="123").put()
+            else:
+                Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
 
 
 config = {
