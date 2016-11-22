@@ -131,9 +131,18 @@ class QuestionQueue(BaseHandler):
                 qqtab=3
             if user:
                 user = user[0]
+                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                              answer='He wont even invite us to Thanksgiving :(')
+                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?')
+                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?')
                 template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
                 self.response.write(template.render({
                     'user': user,
+                    'q1s': q1.question,
+                    'q2s': q2.question,
+                    'q3s': q3.question,
                     'QQTAB': qqtab
                 }))
         else:
