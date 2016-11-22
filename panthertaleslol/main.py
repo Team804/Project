@@ -104,9 +104,9 @@ class AdminHome(BaseHandler):
         self.response.write(template.render())
 
 
-class StudentQA(BaseHandler):
+class SubmitQuestion(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/StudentQAPage.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
         self.response.write(template.render())
 
 
@@ -218,16 +218,27 @@ config = {
         }
 }
 
+class TestPage(webapp2.RequestHandler):
+    def get(self):
+        testing_class = TestTests()
+        testing_class.list_results_all[:] = []
+        testing_class.run_all_tests()
+        logging.info(testing_class.test_results.testsRun)
+        template = JINJA_ENVIRONMENT.get_template('templates/testPage.html')
+        logging.info(len(testing_class.list_results_all))
+        self.response.write(template.render({'test_results':testing_class.list_results_all}))
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/studenthome', StudentHome),
     ('/adminhome', AdminHome),
-    ('/studentQA', StudentQA),
+    ('/submitquestion', SubmitQuestion),
     ('/submitfaq', SubmitFAQ),
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQDelete', FAQDelete),
-    ('/logout', LogoutHandler)
+    ('/logout', LogoutHandler),
+    ('/testpage', TestPage)
 ], debug=True, config=config)

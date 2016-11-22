@@ -25,18 +25,28 @@
           <file leaf-file-name="StudentHomePage.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/StudentHomePage.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="442">
-                  <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+                <state relative-caret-position="456">
+                  <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="FAQ.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/FAQ.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="179">
+                  <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/panthertaleslol/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="508">
-                  <caret line="219" column="0" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+                <state relative-caret-position="496">
+                  <caret line="231" column="23" selection-start-line="231" selection-start-column="23" selection-end-line="231" selection-end-column="23" />
                   <folding>
                     <element signature="e#601#625#0" expanded="true" />
                   </folding>
@@ -44,10 +54,30 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="submitquestion.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitquestion.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="442">
+                  <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="StudentQAPage.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/StudentQAPage.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-501">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="testQuestion.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/panthertaleslol/tests/testQuestion.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="153">
+                <state relative-caret-position="-70">
                   <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
                   <folding>
                     <element signature="e#0#15#0" expanded="true" />
@@ -61,7 +91,15 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="204">
                   <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-                  <folding />
+                  <folding>
+                    <marker date="1479773679263" expanded="true" signature="92:1942" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="927:1313" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="936:1292" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="1353:1544" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="1354:1523" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="1631:1942" ph="..." />
+                    <marker date="1479773679263" expanded="true" signature="1640:1913" ph="..." />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -73,8 +111,8 @@
           <file leaf-file-name="submitfaq.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitfaq.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="476">
-                  <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+                <state relative-caret-position="544">
+                  <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
                   <folding />
                 </state>
               </provider>
@@ -95,8 +133,8 @@
           <file leaf-file-name="FAQAdminView.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/FAQAdminView.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-125">
-                  <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+                <state relative-caret-position="516">
+                  <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
                   <folding />
                 </state>
               </provider>
@@ -111,6 +149,7 @@
       <list>
         <option value="Python Unit Test" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -128,8 +167,11 @@
         <option value="$PROJECT_DIR$/panthertaleslol/tests/TestUser.py" />
         <option value="$PROJECT_DIR$/panthertaleslol/tests/TestQuestion.py" />
         <option value="$PROJECT_DIR$/panthertaleslol/question.py" />
-        <option value="$PROJECT_DIR$/panthertaleslol/templates/FAQAdminView.html" />
         <option value="$PROJECT_DIR$/panthertaleslol/main.py" />
+        <option value="$PROJECT_DIR$/panthertaleslol/templates/StudentHomePage.html" />
+        <option value="$PROJECT_DIR$/panthertaleslol/templates/FAQ.html" />
+        <option value="$PROJECT_DIR$/panthertaleslol/templates/FAQAdminView.html" />
+        <option value="$PROJECT_DIR$/panthertaleslol/templates/submitquestion.html" />
       </list>
     </option>
   </component>
@@ -260,6 +302,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Git/git-bash.exe" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RunManager" selected="Python tests.Unittests in testQuestion">
     <configuration default="false" name="Unittests in TestQuestion" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
@@ -548,22 +591,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/question.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitfaq.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/panthertaleslol/user.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -604,7 +631,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding />
+          <folding>
+            <marker date="1479773679263" expanded="true" signature="92:1942" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="927:1313" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="936:1292" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1353:1544" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1354:1523" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1631:1942" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1640:1913" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -881,16 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/tests/testQuestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/AdministratorHomePage.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -908,52 +933,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitfaq.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/panthertaleslol/question.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+          <folding>
+            <marker date="1479773679263" expanded="true" signature="92:1942" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="927:1313" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="936:1292" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1353:1544" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1354:1523" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1631:1942" ph="..." />
+            <marker date="1479773679263" expanded="true" signature="1640:1913" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/tests/testQuestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-70">
+          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/StudentQAPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-501">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/StudentHomePage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/FAQ.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/StudentHomePage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="10" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+        <state relative-caret-position="179">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/FAQAdminView.html">
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitfaq.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-125">
-          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        <state relative-caret-position="544">
+          <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/panthertaleslol/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="219" column="0" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+        <state relative-caret-position="496">
+          <caret line="231" column="23" selection-start-line="231" selection-start-column="23" selection-end-line="231" selection-end-column="23" />
           <folding>
             <element signature="e#601#625#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/submitquestion.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/panthertaleslol/templates/FAQAdminView.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="516">
+          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>

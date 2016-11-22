@@ -54,13 +54,9 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
                     {% endif %}
                 {% endfor %}
 			</form>
-            <form action="/FAQADMIN" method = "POST">
-                Question:<br>
-                <input type="text" name="question"><br>
-                Answer:<br>
-                <input type="text" name="answer">
-                <br>
-                <input type="submit" value="Submit">
+            <br>
+            <form action="/submitfaq" method = "GET">
+                <input type='submit' value='Submit New FAQ'>
             </form>
 		</div>
 	</body>
