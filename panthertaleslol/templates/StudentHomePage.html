@@ -15,7 +15,7 @@
 				<li class="navitem">
 					<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
 				<li class="navitem">
-					<form action="/submitquestion" method="GET"> <input class="navlink" type='submit' value='Submit A Question'> </form></li>
+					<form action="/studentQA" method="GET"> <input class="navlink" type='submit' value='Submit A Question'> </form></li>
 				<li class="navitem">
 					<form action="/FAQ" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
 				<li class="navitem">
@@ -31,7 +31,7 @@
 			<ul>
 				{% for i in myQuestions %}
 					{# TODO: add links to each question dialog page? #}
-				<li><a href="/submitquestion">{{i}}</a></li>
+				<li><a href="/studentQA">{{i}}</a></li>
 				{% endfor %}
 			</ul>
 		</div>
