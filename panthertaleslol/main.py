@@ -18,6 +18,7 @@ from user import Student
 from user import Professor
 from user import User
 from question import Question
+from testTests import TestTests
 import logging
 import webapp2
 import os
@@ -249,6 +250,55 @@ class TestPage(webapp2.RequestHandler):
         logging.info(len(testing_class.list_results_all))
         self.response.write(template.render({'test_results':testing_class.list_results_all}))
 
+class RegisterStudents(BaseHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/RegisterStudentsPage.html')
+        self.response.write(template.render())
+    def post(self):
+        input_list = self.request.get('inputText')
+        logging.info(input_list)
+        self.parse_info(input_list)
+        self.redirect('/')
+
+    def parse_info(self, input_list):
+
+        input_list = input_list.replace(' ','')
+
+        while len(input_list) > 5:
+
+            pos = input_list.find(',')
+            l_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(l_name)
+
+            pos = input_list.find(',')
+            f_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(f_name)
+
+            pos = input_list.find(',')
+            u_name = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(u_name)
+
+            pos = input_list.find('\n')
+            type = input_list[0:pos].replace(',','')
+            input_list = input_list[pos:len(input_list)]
+            logging.info(type)
+
+            # add user
+            if type == "Instructor":
+                Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="123").put()
+            else:
+                Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
+
+
+config = {
+    'webapp2_extras.sessions': {
+            'secret_key': 'my-secret-key'
+        }
+}
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/studenthome', StudentHome),
@@ -260,6 +310,7 @@ app = webapp2.WSGIApplication([
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQDelete', FAQDelete),
+    ('/registerStudents', RegisterStudents),
     ('/logout', LogoutHandler),
     ('/testpage', TestPage)
 ], debug=True, config=config)

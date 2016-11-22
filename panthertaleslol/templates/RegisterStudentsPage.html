@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Administrator Home Page</title>
+    <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+  <div class="pagetitle">
+		<div class="container">
+			<h1>Register Students Page</h1>
+		</div>
+	</div>
+	<div>
+		<ul class="navbar">
+			<li class="navitem">
+				<form action="/" method="GET"> <input class="navlink" type='submit' value='Home'> </form></li>
+			<li class="navitem">
+				<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='View QuestionQueue'> </form></li>
+			<li class="navitem">
+				<form action="/FAQADMIN" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
+			<li class="navitem">
+				<form action="/registerStudents" method="GET"> <input class="current navlink" type='submit' value='Register Students'> </form></li>
+			<li class="navitem">
+				<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
+		</ul>
+	</div>
+  <form action='/registerStudents' method='POST'>
+			<textarea name="inputText" rows="25" cols="50">Paste Student list here
+			</textarea>
+	  	<input type="submit" value="submit">
+	</form>
+  </body>
+</html>
