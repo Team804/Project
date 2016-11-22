@@ -9,7 +9,7 @@ class Question(ndb.Model):
     answer = ndb.StringProperty()  # response field written straight to question
     date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
     # bool flag to see if question has been looked at for future implementation maybe?
-    unSeen = ndb.BooleanProperty(required=True)
+    unSeen = ndb.BooleanProperty()
 
     def get(self):
         questions = Question.query().fetch()

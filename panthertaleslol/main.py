@@ -25,8 +25,6 @@ import os
 import jinja2
 from testTests import TestTests
 from webapp2_extras import sessions
-import csv
-import StringIO
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
