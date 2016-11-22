@@ -21,7 +21,7 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 				<li class="navitem">
 					<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
 				<li class="navitem">
-					<form action="/studentQA" method="GET"> <input class="navlink" type='submit' value='Submit A Question'> </form></li>
+					<form action="/submitquestion" method="GET"> <input class="navlink" type='submit' value='Submit A Question'> </form></li>
 				<li class="navitem">
 					<form action="/FAQ" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
 				<li class="navitem">
@@ -29,19 +29,19 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 			</ul>
 		</div>
 		<div class = "faq">
-		
+			<form action="/FAQADMIN" method="GET">
+				{% for q in questions %}
+                    {% if q.isFAQ %}
+                    <li>
+                        {{ q.question }}
+                        <ul>
+                            {{ q.answer }}
+                        </ul>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+			</form>
 		</div>
-			<div class="panel-group">
-				<div class="header">General Questions:</div>
-					<h4 class="question">
-						Is this a legitimate FAQ?
-					</h4>
-					<div class="answer">
-						No, this is just a prototype using html.
-					</div>
-					</br>
-					</br>
-			</div>
 	</body>
 </html>
 

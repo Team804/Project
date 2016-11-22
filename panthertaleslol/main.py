@@ -14,17 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from user import Student
+from user import Professor
+from user import User
+from question import Question
 import logging
-import os
-
-import jinja2
 import webapp2
+import os
+import jinja2
 from webapp2_extras import sessions
 
-from testTests import TestTests
-from user import Professor
-from user import Student
-from user import User
 
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -105,9 +104,9 @@ class AdminHome(BaseHandler):
         self.response.write(template.render())
 
 
-class StudentQA(BaseHandler):
+class SubmitQuestion(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/StudentQAPage.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
         self.response.write(template.render())
 
 
@@ -139,14 +138,73 @@ class QuestionQueue(BaseHandler):
 class FAQ(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
-        self.response.write(template.render())
+
+        questions = Question.query().fetch()
+        q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                     answer='He wont even invite us to Thanksgiving :(')
+        q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                     answer='What is wrong with that man?')
+        q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                      answer='What is wrong with that man?')
+        tempQuestions = []
+        tempQuestions.append(q1)
+        tempQuestions.append(q2)
+        tempQuestions.append(q3)
+
+        self.response.write(template.render( {
+            'str':q1.question,
+            'questions':tempQuestions
+            } ))
+
+        if not questions:
+            questions = []
+            Question(isFAQ=True, question='Why does Kyle hate us?',
+                     answer='He wont even invite us to Thanksgiving :(').put()
+            Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                     answer='What is wrong with that man?').put()
 
 
 class FAQADMIN(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
-        self.response.write(template.render())
 
+        questions = Question.query().fetch()
+        q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                     answer='He wont even invite us to Thanksgiving :(')
+        q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                     answer='What is wrong with that man?')
+        q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                      answer='What is wrong with that man?')
+        tempQuestions = []
+        tempQuestions.append(q1)
+        tempQuestions.append(q2)
+        tempQuestions.append(q3)
+
+        self.response.write(template.render( {
+            'str':q1.question,
+            'questions':questions
+            } ))
+
+        Question(isFAQ=True, question='Why does Kyle hate us?',
+                 answer='He wont even invite us to Thanksgiving :(').put()
+        Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                 answer='What is wrong with that man?').put()
+        questions = Question.query().fetch()
+
+    def post(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+
+        self.response.write(template.render( {
+
+            } ))
+
+class FAQDelete(BaseHandler):
+    def post(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+
+        self.response.write(template.render( {
+
+            } ))
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -154,6 +212,11 @@ class LogoutHandler(BaseHandler):
             self.session.pop('username')
         self.redirect('/')
 
+config = {
+    'webapp2_extras.sessions': {
+            'secret_key': 'my-secret-key'
+        }
+}
 
 class TestPage(webapp2.RequestHandler):
     def get(self):
@@ -165,26 +228,17 @@ class TestPage(webapp2.RequestHandler):
         logging.info(len(testing_class.list_results_all))
         self.response.write(template.render({'test_results':testing_class.list_results_all}))
 
-
-config = {
-    'webapp2_extras.sessions': {
-            'secret_key': 'my-secret-key'
-        }
-}
-
-
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/studenthome', StudentHome),
     ('/adminhome', AdminHome),
-    ('/studentQA', StudentQA),
+    ('/submitquestion', SubmitQuestion),
     ('/submitfaq', SubmitFAQ),
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
+    ('/FAQDelete', FAQDelete),
     ('/logout', LogoutHandler),
     ('/testpage', TestPage)
 ], debug=True, config=config)
-
-

@@ -29,38 +29,36 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 			</ul>
 		</div>
 		<div class = "faq">
-		
+			<form action="/FAQADMIN" method="GET">
+				{% for q in questions %}
+                    {% if q.isFAQ %}
+                    <li>
+                        {{ q.question }}
+                        <ul>
+                            {{ q.answer }}
+                        </ul>
+                        <button type="button">Edit</button>
+                        {# TODO: #}
+                        {# if Edit #}
+                            {# Create new faq submission form #}
+                            {# update q with new input #}
+                        {# endif #}
+                        <button type="button">Delete</button>
+                        {# TODO: #}
+                        {# if Delete #}
+                            {# q.delete() or q.key.delete() #}
+                            {# self.redirect('/FAQADMIN') #}
+                        {# endif #}
+                    </li>
+                    <br>
+                    {% endif %}
+                {% endfor %}
+			</form>
+            <br>
+            <form action="/submitfaq" method = "GET">
+                <input type='submit' value='Submit New FAQ'>
+            </form>
 		</div>
-			<div class="panel-group">
-				<div class="header">General Questions:</div>
-					<h4 class="question">
-						Is this a legitimate FAQ?
-					</h4>
-					<div class="answer">
-						No, this is just a prototype using html.
-					</div>
-					<br>
-						<button type="button">Edit</button>
-						<button type="button">Delete</button>
-					</br>
-					</br>
-
-					<h4 class="question">
-						What is an FAQ?
-					</h4>
-					<div class="answer">
-						Display for frequently asked questions by class
-					</div>
-					<br>
-						<button type="button">Edit</button>
-						<button type="button">Delete</button>
-					</br>
-					</br>
-					</br>
-					</br>
-	
-					<button type="button">Add FAQ</button>
-			</div>
 	</body>
 </html>
 
