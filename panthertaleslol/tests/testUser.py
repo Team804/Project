@@ -28,8 +28,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.user.username, 'Kyle')
 
     def test_set_password(self):
-        self.user.password = 'kylesuckslol'
-        self.assertEqual(self.user.password, 'kylesuckslol')
+        self.user.password = 'kylerockslol'
+        self.assertEqual(self.user.password, 'kylerockslol')
 
     def test_unique_user_names(self):
         user2 = User(first_name="first", last_name="last", user_name="user", password="")
