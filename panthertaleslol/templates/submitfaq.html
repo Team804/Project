@@ -23,20 +23,20 @@
 				<p>
                     Question:
                     <br>
-					<textarea rows="5" cols="50">
+					<textarea name='question' rows="5" cols="50">
 					</textarea>
                     <br>
                     Answer:
                     <br>
-                    <textarea rows="5" cols="50">
+                    <textarea name='answer' rows="5" cols="50">
 					</textarea>
 				</p>
 			</div>
 		</div>
 		<div class="submitbutton">
-			<div class="container">
-				<button type="button"> Submit FAQ </button>
-			</div>
+			<form action="/submitfaq" method="POST">
+				<input type='submit' value='Submit FAQ'>
+			</form>
 		</div>
 		<div class="footer">
 			<div class="container">

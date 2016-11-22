@@ -115,6 +115,14 @@ class SubmitFAQ(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
         self.response.write(template.render())
+    def post(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
+
+        self.response.write(template.render( {
+
+        }))
+        Question(isFAQ=True, question=self.request.get('question'), answer=self.request.get('answer')).put()
+        self.redirect('FAQAdminView')
 
 
 class QuestionQueue(BaseHandler):
@@ -153,7 +161,6 @@ class FAQ(BaseHandler):
         tempQuestions.append(q3)
 
         self.response.write(template.render( {
-            'str':q1.question,
             'questions':tempQuestions
             } ))
 
@@ -183,7 +190,7 @@ class FAQADMIN(BaseHandler):
 
         self.response.write(template.render( {
             'str':q1.question,
-            'questions':questions
+            'questions':tempQuestions
             } ))
 
         Question(isFAQ=True, question='Why does Kyle hate us?',

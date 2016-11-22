@@ -6,6 +6,8 @@ import os.path
 
 from user import User
 from user import Professor
+from user import Student
+from question import Question
 
 # class to test properties to be read from later in jinja template
 class TestObj():
@@ -82,6 +84,67 @@ class TestUser(unittest.TestCase):
     def test_change_password(self):
         pass
 
+class TestQuestion(unittest.TestCase):
+    def setUp(self):
+        # put some stuff in database to tie question objects to
+        student_key = Student(username='student', password='password').put()
+        prof_key = Professor(username='professor', password='password').put()
+
+    def tearDown(self):
+        self.student_key.delete()
+        self.prof_key.delete()
+
+    def test_post_FAQ(self):
+        self.faq_as_student = Question(isFAQ=True, question='?', answer="aaaaaaa", UserObj=self.student)
+        self.faq_as_admin = Question(isFAQ=True, question='???', answer="BbBbBb", UserObj=self.admin)
+        self.assertFalse(self.faq_as_student.isFAQ)
+        self.assertTrue(self.faq_as_admin.isFAQ)
+        self.assertEqual('?', self.faq_as_student.question)
+        self.assertEqual('???', self.faq_as_admin.question)
+        self.assertEqual('aaaaaaa', self.faq_as_student.answer)
+        self.assertEqual('BbBbBb', self.faq_as_admin.answer)
+        del self.faq_as_student
+        del self.faq_as_admin
+
+    def test_set_FAQ(self):
+        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer", UserObj=self.student)
+        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER", UserObj=self.admin)
+        self.assertFalse(self.faq_as_student.isFAQ)
+        self.assertFalse(self.faq_as_admin.isFAQ)
+        self.faq_as_student.set_FAQ(isFAQ=True)  # , self.faq_as_student
+        self.faq_as_admin.set_FAQ(isFAQ=True)  # , self.faq_as_admin
+        self.assertFalse(self.faq_as_student.isFAQ)
+        self.assertTrue(self.faq_as_admin.isFAQ)
+        del self.faq_as_student
+        del self.faq_as_admin
+
+    def test_set_answer(self):
+        self.faq_as_student = Question(isFAQ=False, question='?', answer="answer", UserObj=self.student)
+        self.faq_as_admin = Question(isFAQ=False, question='???', answer="ANSWER", UserObj=self.admin)
+        self.faq_as_student.set_answer("")
+        self.faq_as_admin.set_answer("   .   ")
+        self.assertEqual("", self.faq_as_student.answer)
+        self.assertEqual("   .   ", self.faq_as_admin)
+
+    def test_display_FAQ(self):
+        self.faq1 = Question(isFAQ=True, question="?", answer="!")
+        self.faq2 = Question(isFAQ=True, question="??", answer="!!")
+        self.faq3 = Question(isFAQ=True, question="???", answer="!!!")
+        self.notfaq = Question(isFAQ=False, question="!????", answer="?!!!!")
+        self.assertTrue(self.faq1.isFAQ)
+        self.assertTrue(self.faq2.isFAQ)
+        self.assertTrue(self.faq3.isFAQ)
+        self.assertFalse(self.notfaq.isFAQ)
+
+    def test_check_linked_list_functionality(self):
+        pass
+
+    def test_check_date(self):
+        pass
+
+    def test_empty_question(self):
+        pass
+
 
 
 
@@ -91,7 +154,7 @@ class TestTests():
     my_stream = StringIO.StringIO()
     list_results = []
     list_results_all = []
-    test_classes_to_run = [TestRegisterUsers, TestUser]
+    test_classes_to_run = [TestRegisterUsers, TestUser, TestQuestion]
 
 
     def run_all_tests(self):
