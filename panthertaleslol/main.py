@@ -18,6 +18,7 @@ from user import Student
 from user import Professor
 from user import User
 from question import Question
+from testTests import TestTests
 import logging
 import webapp2
 import os
@@ -254,9 +255,18 @@ class RegisterStudents(BaseHandler):
         template = JINJA_ENVIRONMENT.get_template('templates/RegisterStudentsPage.html')
         self.response.write(template.render())
     def post(self):
-        student_list = self.request.get('inputText')
-        logging.info(student_list)
+        input_list = self.request.get('inputText')
+        logging.info(input_list)
+        self.parse_info(input_list)
         self.redirect('/')
+
+    def parse_info(self, input_list):
+        num_students = input_list.count('/n')
+        input_list = input_list.replace('/n', '')
+        student_list = input_list.replace(' ', '').split(',')
+        for i in range(len(student_list)):
+            if i%3 == 0:
+
 
 
 config = {
