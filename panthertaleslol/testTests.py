@@ -3,7 +3,6 @@ import glob
 import logging
 import StringIO
 import os.path
-
 from user import User
 from user import Professor
 
@@ -83,6 +82,43 @@ class TestUser(unittest.TestCase):
         pass
 
 
+class TestSessions(unittest.TestCase):
+    def setUp(self):
+        my_session = 'in_session'
+        self.session['my_session'] = my_session
+
+    def tearDown(self):
+        for key in self.session:
+            self.session.pop(key)
+        self.assertTrue(len(self.session) == 0)
+
+    def test_multiple_sessions(self):
+        session_one = 'We '
+        session_two = 'are '
+        session_three = 'in '
+        session_four = 'session.'
+
+        self.session['session_one'] = session_one
+        self.session['session_two'] = session_two
+        self.session['session_three'] = session_three
+        self.session['session_four'] = session_four
+
+        self.assertTrue(len(self.session) == 5)
+        self.assertTrue('session_one' in self.session)
+        self.assertTrue('session_two' in self.session)
+        self.assertTrue('session_three' in self.session)
+        self.assertTrue('session_four' in self.session)
+        self.assertTrue('my_session' in self.session)
+        self.assertTrue(self.session['my_session'])
+        self.assertTrue(self.session['session_one'])
+        self.assertTrue(self.session['session_two'])
+        self.assertTrue(self.session['session_three'])
+        self.assertTrue(self.session['session_four'])
+
+    def test_one_session(self):
+        self.assertTrue(len(self.session) == 1)
+        self.assertTrue('my_session' in self.session)
+        self.assertTrue(self.session['my_session'])
 
 
 # Class to test all the tests
@@ -91,7 +127,7 @@ class TestTests():
     my_stream = StringIO.StringIO()
     list_results = []
     list_results_all = []
-    test_classes_to_run = [TestRegisterUsers, TestUser]
+    test_classes_to_run = [TestRegisterUsers, TestUser, TestSessions]
 
 
     def run_all_tests(self):
