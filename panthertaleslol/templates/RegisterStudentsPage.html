@@ -6,23 +6,28 @@
   <body>
   <div class="pagetitle">
 		<div class="container">
-			<h1>Professor Home Page</h1>
+			<h1>Register Students Page</h1>
 		</div>
 	</div>
 	<div>
 		<ul class="navbar">
 			<li class="navitem">
-				<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
+				<form action="/" method="GET"> <input class="navlink" type='submit' value='Home'> </form></li>
 			<li class="navitem">
 				<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='View QuestionQueue'> </form></li>
 			<li class="navitem">
 				<form action="/FAQADMIN" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
 			<li class="navitem">
+				<form action="/registerStudents" method="GET"> <input class="current navlink" type='submit' value='Register Students'> </form></li>
+			<li class="navitem">
 				<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 		</ul>
 	</div>
-    <textarea rows="100" cols="50">
-        Paste Student list here
-    </textarea>
+  <form action='/registerStudents' method='POST'>
+		<textarea name="inputText" rows="40" cols="100">
+			Paste Student list here
+		</textarea>
+	  	<input type="submit" value="submit">
+	</form>
   </body>
 </html>

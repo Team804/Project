@@ -249,6 +249,22 @@ class TestPage(webapp2.RequestHandler):
         logging.info(len(testing_class.list_results_all))
         self.response.write(template.render({'test_results':testing_class.list_results_all}))
 
+class RegisterStudents(BaseHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/RegisterStudentsPage.html')
+        self.response.write(template.render())
+    def post(self):
+        student_list = self.request.get('inputText')
+        logging.info(student_list)
+        self.redirect('/')
+
+
+config = {
+    'webapp2_extras.sessions': {
+            'secret_key': 'my-secret-key'
+        }
+}
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/studenthome', StudentHome),
@@ -260,6 +276,7 @@ app = webapp2.WSGIApplication([
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQDelete', FAQDelete),
+    ('/registerStudents', RegisterStudents),
     ('/logout', LogoutHandler),
     ('/testpage', TestPage)
 ], debug=True, config=config)
