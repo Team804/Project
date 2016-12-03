@@ -7,21 +7,9 @@ class Question(ndb.Model):
     isFAQ = ndb.BooleanProperty(required=True)
     question = ndb.StringProperty(required=True)
     answer = ndb.StringProperty()  # response field written straight to question
-    date_created = ndb.DateTimeProperty(auto_now_add=True, required=True)
+    date_created = ndb.DateTimeProperty(auto_now_add=True)
     # bool flag to see if question has been looked at for future implementation maybe?
     unSeen = ndb.BooleanProperty()
-
-    def get(self):
-        questions = Question.query().fetch()
-
-        if not questions:
-            Question(isFAQ=True, question='Why does Kyle hate us?',
-                     answer='He wont even invite us to Thanksgiving :(').put()
-            Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                     answer='What is wrong with that man?').put()
-
-    def post(self):
-        pass
 
     # method to set an answer
     def set_answer(self, answer):
