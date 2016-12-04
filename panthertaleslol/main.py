@@ -48,8 +48,8 @@ class MainHandler(BaseHandler):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            Professor(user_name='SampleProfessor', password='pass123').put()
-            Student(user_name='SampleStudent', password='pass234').put()
+            Professor(user_name='SampleProfessor', password='pass123', first_name='Jason', last_name='Rock').put()
+            Student(user_name='SampleStudent', password='pass234', first_name='Kylie', last_name='Weber').put()
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             profs = Professor.query(Professor.user_name == username).fetch()
@@ -77,22 +77,29 @@ class MainHandler(BaseHandler):
             if not users:
                 self.redirect('/')
             else:
-                profs = Professor.query(Professor.user_name == entered_username).fetch()
-                if profs:
-                    current_user = profs[0]
-                    if entered_password != current_user.password:
-                        self.redirect('/')
-                    else:
-                        self.session['username'] = entered_username
-                        self.redirect('/adminhome')
+
+                logging.info(User.query(User.user_name == entered_username).fetch()[0].first_login)
+                # check if it's their first time logging in, sent em to different page then
+                if User.query(User.user_name == entered_username).fetch()[0].first_login:
+                    self.session['username'] = entered_username
+                    self.redirect('/myFirstLogin')
                 else:
-                    students = Student.query(Student.user_name == entered_username).fetch()
-                    current_user = students[0]
-                    if entered_password != current_user.password:
-                        self.redirect('/')
+                    profs = Professor.query(Professor.user_name == entered_username).fetch()
+                    if profs:
+                        current_user = profs[0]
+                        if entered_password != current_user.password:
+                            self.redirect('/')
+                        else:
+                            self.session['username'] = entered_username
+                            self.redirect('/adminhome')
                     else:
-                        self.session['username'] = entered_username
-                        self.redirect('/studenthome')
+                        students = Student.query(Student.user_name == entered_username).fetch()
+                        current_user = students[0]
+                        if entered_password != current_user.password:
+                            self.redirect('/')
+                        else:
+                            self.session['username'] = entered_username
+                            self.redirect('/studenthome')
 
 class StudentHome(BaseHandler):
     def get(self):
@@ -292,6 +299,34 @@ class RegisterStudents(BaseHandler):
             else:
                 Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
 
+class FirstLogin(BaseHandler):
+    def get(self):
+        username = self.session['username']
+        logging.info(username)
+        user = User.query(User.user_name == username).fetch()
+        user = user[0]
+        logging.info(user)
+
+        template = JINJA_ENVIRONMENT.get_template('templates/firstlogin.html')
+        self.response.write(template.render({'user':user, 'first_time':True}))
+    def post(self):
+        username = self.session['username']
+        logging.info(username)
+        user = User.query(User.user_name == username).fetch()[0]
+        if self.request.get('first_pass') == self.request.get('second_pass'): #check if passwords match
+            logging.info(self.request.get('first_pass'))
+            if user.change_password(self.request.get('first_pass')): # password change successful
+                user.first_login = False
+                logging.info(user.first_login)
+                user.put()
+                self.redirect('/')
+            else:
+                template = JINJA_ENVIRONMENT.get_template('templates/firstlogin.html')
+                self.response.write(template.render({'user': user, 'first_time':False}))
+        else:
+            template = JINJA_ENVIRONMENT.get_template('templates/firstlogin.html')
+            self.response.write(template.render({'user': user, 'first_time':False, 'password_match': False}))
+
 
 config = {
     'webapp2_extras.sessions': {
@@ -300,7 +335,6 @@ config = {
 }
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
     ('/studenthome', StudentHome),
     ('/adminhome', AdminHome),
     ('/submitquestion', SubmitQuestion),
@@ -312,5 +346,7 @@ app = webapp2.WSGIApplication([
     ('/FAQDelete', FAQDelete),
     ('/registerStudents', RegisterStudents),
     ('/logout', LogoutHandler),
-    ('/testpage', TestPage)
+    ('/testpage', TestPage),
+    ('/myFirstLogin', FirstLogin),
+    ('/', MainHandler)
 ], debug=True, config=config)
