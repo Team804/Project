@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>First Login Page</title>
+    <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+  <div class="pagetitle">
+		<div class="container">
+			<h1>Change Password Page</h1>
+		</div>
+	</div>
+  {% if first_time == False %}
+  <br/> There was an Error with entered information, please re-enter information<br/>
+  {% endif %}
+    <h4>Please Verify Information and Change Password</h4>
+ 	<form action='/myFirstLogin' method='POST' >
+        First Name: <input type='text' name='first_name' value="{{user.first_name}}"/><br/>
+		Last Name: <input type='text' name='last_name' value="{{user.last_name}}"/><br/>
+        Password should be longer than 3 characters and contain a number<br/>
+        {% if password_match == False %}
+           <br/> ERROR: Passwords don't match<br/>
+        {% endif %}
+		New Password <input type="password" name="first_pass"/><br/>
+        Retype Password <input type="password" name="second_pass"/><br/>
+		<input type='submit' value='Submit' />
+	</form>
+	</div>
+  </body>
+</html>

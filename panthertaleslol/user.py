@@ -1,5 +1,6 @@
 # User NBD Model Class
 import re
+import logging
 from question import Question
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb import polymodel
@@ -10,14 +11,19 @@ class User(polymodel.PolyModel):
     last_name = ndb.StringProperty()
     user_name = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
+    first_login = ndb.BooleanProperty(default=True)
 
     def change_password(self, newPassword):
         if newPassword: #non empty password
             if len(newPassword) > 3: # password length
-                number = re.search(r'\d+', newPassword).group()
-                if len(number) > 0: # have number in pass
-                    self.password = newPassword
-                    return True
+                logging.info(newPassword)
+                try:
+                    number = re.search(r'\d+', newPassword).group()
+                    if len(number) > 0:  # have number in pass
+                        self.password = newPassword
+                        return True
+                except:
+                    return False
         return False
 
     # method to check uniqueness of setting user names
