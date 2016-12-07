@@ -23,6 +23,7 @@ import logging
 import webapp2
 import os
 import jinja2
+import time
 from testTests import TestTests
 from webapp2_extras import sessions
 
@@ -148,6 +149,24 @@ class SubmitQuestion(BaseHandler):
             self.response.write("Invalid Credentials")
             self.redirect('/')
 
+        template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
+        self.response.write(template.render())
+    def post(self):
+        question = self.request.get("questionInput")
+        logging.info(question)
+        username = self.session['username']
+        user = User.query(User.user_name == username).fetch()
+        user_key = user[0].key
+        Question(parent=user_key, question=question, isFAQ=False).put()
+        html="""
+            <h3>Question Submitted</h3>
+            <form action="/" method="GET">
+                <input id="homeButton" type='submit' value='Home'/></div>
+			</form>
+        """
+        self.response.write(html)
+
+
 
 class SubmitFAQ(BaseHandler):  # what is this even for?
     def get(self):
@@ -252,30 +271,21 @@ class FAQADMIN(BaseHandler):
             if profs:
                 template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
                 questions = Question.query().fetch()
-
-                if not questions:
+                # if there's no questions currently in the queue put some in
+                if not questions[0]:
                     q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                                  answer='He wont even invite us to Thanksgiving :(')
+                                  answer='He wont even invite us to Thanksgiving :(').put()
                     q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?')
+                                  answer='What is wrong with that man?').put()
                     q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?')
+                                  answer='What is wrong with that man?').put()
+                    questions = Question.query().fetch()
+                    logging.info(questions[1])
+                logging.info(questions[0])
+                self.response.write(template.render({
+                    'questions': questions
+                }))
 
-                    tempQuestions = []
-
-                    tempQuestions.append(q1)
-                    tempQuestions.append(q2)
-                    tempQuestions.append(q3)
-
-                    self.response.write(template.render({
-                        'str': q1.question,
-                        'questions': tempQuestions
-                    }))
-                else:
-                    self.response.write(template.render({
-                        'str': questions[0].question,
-                        'questions': questions
-                    }))
             else:
                 self.response.write("Invalid Credentials")
                 self.redirect('/')
@@ -283,16 +293,24 @@ class FAQADMIN(BaseHandler):
             self.response.write("Invalid Credentials")
             self.redirect('/')
 
-    def post(self):
-        pass
 
-
-class FAQDelete(BaseHandler):  # also what is this
     def post(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+        self.request.get("question")
+        #query student class to find relevant question idk how check labs
+        #edit said question using fetchedQuestion.fieldToEdit = x
+        self.response.write(template.render( {
 
-        self.response.write(template.render({}))
+            } ))
 
+class FAQDelete(BaseHandler):
+    def get(self):
+        #get the url path
+        url_key = self.request.path
+        question_key = url_key.replace("/FAQADMIN/E/", "")
+        logging.info(question_key)
+        question_key.delete()
+        self.redirect('/FAQADMIN')
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -411,7 +429,7 @@ app = webapp2.WSGIApplication([
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
-    ('/FAQDelete', FAQDelete),
+    ('/FAQADMIN/D/.*', FAQDelete),
     ('/registerStudents', RegisterStudents),
     ('/logout', LogoutHandler),
     ('/testpage', TestPage),

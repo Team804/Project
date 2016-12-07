@@ -31,8 +31,9 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 			</ul>
 		</div>
 		<div class = "faq">
-			<form action="/FAQADMIN" method="GET">
+
 				{% for q in questions %}
+			<form action="/FAQADMIN/D/{{q.key}}" method="GET">
                     {% if q.isFAQ %}
                     <li>
                         {{ q.question }}
@@ -54,8 +55,9 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
                     </li>
                     <br>
                     {% endif %}
+				</form>
                 {% endfor %}
-			</form>
+
             <br>
             <form action="/submitfaq" method = "GET">
                 <input type='submit' value='Submit New FAQ'>
