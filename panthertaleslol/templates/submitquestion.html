@@ -22,19 +22,21 @@
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
 		</div>
-		<div class="submittext">
-			<div class="container">
-				<p>
-					<textarea rows="5" cols="50">Ask your question here!
-					</textarea>
-				</p>
+		<form action="/submitquestion" method="POST">
+			<div class="submittext">
+				<div class="container">
+					<p>
+						<textarea rows="5" cols="50" name="questionInput">Ask your question here!
+						</textarea>
+					</p>
+				</div>
 			</div>
-		</div>
-		<div class="submitbutton">
-			<div class="container">
-				<button type="button"> Submit Question </button>
+			<div class="submitbutton">
+				<div class="container">
+					<input type="submit" value="submit">
+				</div>
 			</div>
-		</div>
+		</form>
 		<div class="footer">
 			<div class="container">
 				<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>

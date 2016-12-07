@@ -1,5 +1,6 @@
 # Question NBD Model Class
 
+
 from google.appengine.ext import ndb
 
 
@@ -11,30 +12,3 @@ class Question(ndb.Model):
     # bool flag to see if question has been looked at for future implementation maybe?
     unSeen = ndb.BooleanProperty()
 
-    # method to set an answer
-    def set_answer(self, answer):
-        # TODO check active session user type if prof
-        # if 'user_name' in self.session and self.session['user_name']:
-        #   current_user = User.query(user_name = self.session['user_name']
-        #   if current_user.type == "Administrator":
-        #       self.answer = answer
-        #       return True
-        #   else:
-        #       return False
-        return False
-
-    def set_followup(self, question):
-        # disliked structured properties so will need to go with key methodology after all
-        # self.next_question = question
-        # self.next_question.prev_question = self
-        return False
-
-    # method to flag Question as an FAQ
-    def set_as_FAQ(self, isFAQ, CurrentUser):
-        # if 'user_name' in self.session and self.session['user_name']:
-        #   current_user = User.query(user_name = self.session['user_name']
-        #   if current_user.type == "Administrator":
-        #       self.isFAQ = isFAQ
-        #       return True
-        #   else:
-        return False
