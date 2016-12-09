@@ -68,7 +68,8 @@ class MainHandler(BaseHandler):
             profs = Professor.query(Professor.user_name == username).fetch()
             if profs:
                 self.redirect('/adminhome')
-            else:
+
+		else:
                 self.redirect('/studenthome')
         else:
             entered_username = self.request.get('username')
@@ -102,6 +103,7 @@ class MainHandler(BaseHandler):
                             self.session['username'] = entered_username
                             self.redirect('/studenthome')
 
+				
 class StudentHome(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
@@ -133,7 +135,16 @@ class AdminHome(BaseHandler):
             self.response.write("Invalid Credentials")
             self.redirect('/')
 
+class StudentAccountSettings(BaseHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
+        self.response.write(template.render())
 
+class AdminAccountSettings(BaseHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
+        self.response.write(template.render()) 
+	
 class SubmitQuestion(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
@@ -425,6 +436,8 @@ app = webapp2.WSGIApplication([
     ('/adminhome', AdminHome),
     ('/submitquestion', SubmitQuestion),
     ('/submitfaq', SubmitFAQ),
+    ('/studentaccountsettings', StudentAccountSettings),
+    ('/adminaccountsettings', AdminAccountSettings),
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
     ('/FAQ', FAQ),
