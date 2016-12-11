@@ -51,6 +51,7 @@ class MainHandler(BaseHandler):
         if not users:
             Professor(user_name='SampleProfessor', password='pass123', first_name='Jason', last_name='Rock').put()
             Student(user_name='SampleStudent', password='pass234', first_name='Kylie', last_name='Weber').put()
+
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             profs = Professor.query(Professor.user_name == username).fetch()
@@ -68,40 +69,30 @@ class MainHandler(BaseHandler):
             profs = Professor.query(Professor.user_name == username).fetch()
             if profs:
                 self.redirect('/adminhome')
-
-		else:
+            else:
                 self.redirect('/studenthome')
         else:
             entered_username = self.request.get('username')
             entered_password = self.request.get('password')
-            users = User.query(User.user_name == entered_username).fetch()
-            logging.info(users)
-            if not users:
-                self.redirect('/')
-            else:
-
-                logging.info(User.query(User.user_name == entered_username).fetch()[0].first_login)
+            user = User.query(User.user_name == entered_username).fetch()[0]
+            if user and entered_password == user.password:
                 # check if it's their first time logging in, sent em to different page then
-                if User.query(User.user_name == entered_username).fetch()[0].first_login:
+                if user.first_login:
                     self.session['username'] = entered_username
                     self.redirect('/myFirstLogin')
                 else:
-                    profs = Professor.query(Professor.user_name == entered_username).fetch()
-                    if profs:
-                        current_user = profs[0]
-                        if entered_password != current_user.password:
-                            self.redirect('/')
-                        else:
-                            self.session['username'] = entered_username
-                            self.redirect('/adminhome')
+                    # profs = Professor.query(Professor.user_name == entered_username).fetch()
+                    if user is Professor:
+                        self.session['username'] = entered_username
+                        self.redirect('/adminhome')
                     else:
-                        students = Student.query(Student.user_name == entered_username).fetch()
-                        current_user = students[0]
-                        if entered_password != current_user.password:
+                        if entered_password != user.password:
                             self.redirect('/')
                         else:
                             self.session['username'] = entered_username
                             self.redirect('/studenthome')
+            else:
+                self.redirect('/')
 
 				
 class StudentHome(BaseHandler):
@@ -170,7 +161,7 @@ class SubmitQuestion(BaseHandler):
         user_key = user[0].key
         Question(parent=user_key, question=question, isFAQ=False).put()
         html="""
-            <h3>Question Submitted</h3>
+            <h3>Question Submitted!</h3>
             <form action="/" method="GET">
                 <input id="homeButton" type='submit' value='Home'/></div>
 			</form>
@@ -182,24 +173,24 @@ class SubmitQuestion(BaseHandler):
 class SubmitFAQ(BaseHandler):  # what is this even for?
     def get(self):
         if 'username' in self.session and self.session['username']:
-            username = self.session['username']
-            students = Student.query(Student.user_name == username).fetch()
-            if students:
-                template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
-                self.response.write(template.render())
-            else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+            html="""<form action='/submitfaq' method = 'POST'>
+            <textarea name = "inputtedQ" rows = "3" cols = "50">
+                Question area
+            </textarea>
+            <textarea name = "inputtedA" rows = "15" cols = "50">
+                Answer area
+            </textarea>
+            <input type="submit" value="submit">
+            </form>
+            """
+            self.response.write(html)
         else:
             self.response.write("Invalid Credentials")
             self.redirect('/')
 
     def post(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
-
-        self.response.write(template.render({}))
-        Question(isFAQ=True, question=self.request.get('question'), answer=self.request.get('answer')).put()
-        self.redirect('FAQAdminView')
+        Question(isFAQ=True, question=self.request.get('inputtedQ'), answer=self.request.get('inputtedA')).put()
+        self.redirect('/FAQADMIN')
 
 
 class QuestionQueue(BaseHandler):
@@ -241,36 +232,20 @@ class QuestionQueue(BaseHandler):
 class FAQ(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
-            username = self.session['username']
-            students = Student.query(Student.user_name == username).fetch()
-            if students:
-                template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
-                questions = Question.query().fetch()
+            template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
+            questions = Question.query().fetch()
+            if not questions:
+                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                              answer='He wont even invite us to Thanksgiving :(').put()
+                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?').put()
+                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?').put()
 
-                if not questions:
-                    q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                                  answer='He wont even invite us to Thanksgiving :(')
-                    q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?')
-                    q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?')
-                    tempQuestions = []
-                    tempQuestions.append(q1)
-                    tempQuestions.append(q2)
-                    tempQuestions.append(q3)
-
-                    self.response.write(template.render({
-                        'questions': tempQuestions
-                    }))
-                else:
-                    self.response.write(template.render({
-                        'questions': questions
-                    }))
-            else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+            self.response.write(template.render({
+                'questions': questions
+            }))
         else:
-            self.response.write("Invalid Credentials")
             self.redirect('/')
 
 
@@ -279,29 +254,25 @@ class FAQADMIN(BaseHandler):
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             profs = Professor.query(Professor.user_name == username).fetch()
-            if profs:
-                template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+            logging.info("3")
+            template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+            questions = Question.query().fetch()
+            # if there's no questions currently in the queue put some in
+            if not questions:
+                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
+                              answer='He wont even invite us to Thanksgiving :(').put()
+                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?').put()
+                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
+                              answer='What is wrong with that man?').put()
+                time.sleep(1) # give time for datastore
                 questions = Question.query().fetch()
-                # if there's no questions currently in the queue put some in
-                if not questions[0]:
-                    q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                                  answer='He wont even invite us to Thanksgiving :(').put()
-                    q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?').put()
-                    q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                                  answer='What is wrong with that man?').put()
-                    questions = Question.query().fetch()
-                    logging.info(questions[1])
-                logging.info(questions[0])
-                self.response.write(template.render({
-                    'questions': questions
+                logging.info(questions[1])
+            logging.info(questions[0])
+            self.response.write(template.render({
+                'questions': questions
                 }))
-
-            else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
         else:
-            self.response.write("Invalid Credentials")
             self.redirect('/')
 
 
@@ -318,9 +289,10 @@ class FAQDelete(BaseHandler):
     def get(self):
         #get the url path
         url_key = self.request.path
-        question_key = url_key.replace("/FAQADMIN/E/", "")
+        question_key = url_key.replace("/FAQADMIN/D/", "")
+        question_key = Question().get_email_from_url_safe_key(question_key)
         logging.info(question_key)
-        question_key.delete()
+        question_key.key.delete()
         self.redirect('/FAQADMIN')
 
 class LogoutHandler(BaseHandler):

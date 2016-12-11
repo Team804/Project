@@ -12,3 +12,12 @@ class Question(ndb.Model):
     # bool flag to see if question has been looked at for future implementation maybe?
     unSeen = ndb.BooleanProperty()
 
+    def get_url_safe_key(self):
+        return self.key.urlsafe()
+
+
+    @staticmethod
+    def get_email_from_url_safe_key(urlsafe_key):
+        email_key = ndb.Key(urlsafe=urlsafe_key)
+        email = email_key.get()
+        return email
