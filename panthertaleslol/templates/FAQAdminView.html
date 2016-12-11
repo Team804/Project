@@ -28,28 +28,30 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 				<li class="navitem">
 					<form action="/registerStudents" method="GET"> <input class="navlink" type='submit' value='Register Students'> </form></li>
 				<li class="navitem">
-                               		<form action="/adminaccountsettings" method="GET"> <input class="navlink" type='submit' value='Account'> </form></li>
+					<form action="/adminaccountsettings" method="GET"> <input class="navlink" type='submit' value='Account'> </form></li>
 				<li class="navitem">
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
 		</div>
 		<div class = "faq">
-
 				{% for q in questions %}
-			<form action="/FAQADMIN/D/{{q.key}}" method="GET">
                     {% if q.isFAQ %}
                     <li>
                         {{ q.question }}
                         <ul>
                             {{ q.answer }}
                         </ul>
-                        <button type="button">Edit</button>
+                        <form action="/FAQADMIN/E/{{q.get_url_safe_key()}}" method="GET">
+                        	<input type='submit' value='Edit'>
+						</form>
                         {# TODO: #}
                         {# if Edit #}
                             {# Create new faq submission form #}
                             {# update q with new input #}
                         {# endif #}
-                        <button type="button">Delete</button>
+						<form action="/FAQADMIN/D/{{q.get_url_safe_key()}}" method="GET">
+                        	<input type='submit' value='Delete'>
+						</form>
                         {# TODO: #}
                         {# if Delete #}
                             {# q.delete() or q.key.delete() #}
@@ -58,7 +60,6 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
                     </li>
                     <br>
                     {% endif %}
-				</form>
                 {% endfor %}
 
             <br>
