@@ -386,6 +386,10 @@ class FirstLogin(BaseHandler):
             logging.info(self.request.get('first_pass'))
             if user.change_password(self.request.get('first_pass')): # password change successful
                 user.first_login = False
+				if self.request.get('first_name'):
+					user.first_name = self.request.get('first_name')
+				if self.request.get('last_name'):
+					user.last_name = self.request.get('last_name')
                 logging.info(user.first_login)
                 user.put()
                 self.redirect('/')
