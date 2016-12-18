@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Submit New Question</title>
+		<title>Submit a Question</title>
 		<link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 		<div class="pagetitle">
 			<div class="container">
-				<h1>Submit a New Question</h1>
+				<h1>Submit a Question</h1>
 			</div>
 		</div>
 		<div>
@@ -24,13 +24,14 @@
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
 		</div>
+	<div class="header">
+		<h2>Ask a New Question!</h2>
+	</div>
+	<div class="submit question">
 		<form action="/submitquestion" method="POST">
 			<div class="submittext">
 				<div class="container">
-					<p>
-						<textarea rows="5" cols="50" name="questionInput">Ask your question here!
-						</textarea>
-					</p>
+						<textarea rows="5" cols="50" name="questionInput"></textarea>
 				</div>
 			</div>
 			<div class="submitbutton">
@@ -39,6 +40,7 @@
 				</div>
 			</div>
 		</form>
+	</div>
 		<div class="footer">
 			<div class="container">
 				<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>

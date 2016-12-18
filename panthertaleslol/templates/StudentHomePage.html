@@ -1,16 +1,17 @@
-{# parameters- username: name of student logging in, myQuestions:list of questions student asked in session  #}
+{# parameters- user: first and last name of user logged in, unanswered_questions:list of student's unanswered questions #}
+{# answered_questions: list of student's answered questions #}
 <html>
-  <head>
-    <title>Student Home Page</title>
-    <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-	<div class="pagetitle">
-		<div class="container">
-			<h1>Student Home Page</h1>
+	<head>
+		<title>Student Home Page</title>
+		<link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="pagetitle">
+			<div class="container">
+				<h1>Student Home Page</h1>
+			</div>
 		</div>
-	</div>
-	<div>
+		<div>
 			<ul class="navbar">
 				<li class="navitem">
 					<form action="/" method="GET"> <input class="current navlink" type='submit' value='Home'> </form></li>
@@ -23,46 +24,25 @@
 				<li class="navitem">
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
-	</div>
-	<div class="header">
-		<h2>Hello, {{ user }}  </h2>
-	</div>
-	<div class="sectiontitle">
-		<div class="container">
-			<h3>My Unanswered Questions</h3>
-			<ul>
-				{% for q in questions %}
-					{% if q.username == user %}
-						<li>{{q.question}}</li>
-						{% if not q.answer %}
-							<h1 id={{q.question}} style="display:none;" > </h1>
-							<ul style="font-size:75%;">
-								Asked on {{q.date_created}}
-							</ul>
-							<br/>
-						{% endif %}
-					{% endif %}
-				{% endfor %}
-			</ul>
-			<h3>My Answered Questions</h3>
-			<ul>
-				{% for q in questions %}
-					{% if q.username == user %}
-						{% if q.answer %}
-							<li>{{q.question}}</li>
-							<h1 id={{q.question}} style="display:none;" > </h1>
-							<ul style="font-size:75%;">
-								Asked on {{q.date_created}}
-							</ul>
-							<ul>
-								{{q.answer}}
-							</ul>
-							<br/>
-						{% endif %}
-					{% endif %}
-				{% endfor %}
-			</ul>
 		</div>
+	<div class="header">
+		<h2>Hello, {{ user }}!</h2>
+	</div>
+	<div class="mypendingqs">
+			<h3>My Pending Questions</h3>
+			<ul class="pendingqlist">
+				{% for q in unanswered_questions %}
+					<li class="pendingqitem"> <p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p></li>
+				{% endfor %}
+			</ul>
+	</div>
+	<div class="myansweredqs">
+			<h3>My Answered Questions</h3>
+			<ul class="answeredqlist">
+				{% for q in answered_questions %}
+					<li class="answeredqitem"><p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
+				{% endfor %}
+			</ul>
 	</div>
 
 

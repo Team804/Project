@@ -10,8 +10,9 @@ class Question(ndb.Model):
     answer = ndb.StringProperty()  # response field written straight to question
     username = ndb.StringProperty()
     date_created = ndb.DateTimeProperty(auto_now_add=True)
+    date_answered = ndb.DateTimeProperty(auto_now=True)
     # bool flag to see if question has been looked at for future implementation maybe?
-    unSeen = ndb.BooleanProperty()
+    unAnswered = ndb.BooleanProperty(default=True)
 
     def get_url_safe_key(self):
         return self.key.urlsafe()

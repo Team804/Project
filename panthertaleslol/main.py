@@ -31,6 +31,7 @@ from webapp2_extras import sessions
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
+
 class BaseHandler(webapp2.RequestHandler):
     def dispatch(self):
         self.session_store = sessions.get_store(request=self.request)
@@ -44,12 +45,13 @@ class BaseHandler(webapp2.RequestHandler):
     def session(self):
         return self.session_store.get_session()
 
+
 class MainHandler(BaseHandler):
     def get(self):
         # populate data store with mock info if it doesn't exist
         users = User.query().fetch()
         if not users:
-            Professor(user_name='SampleProfessor', password='pass123', first_name='Jason', last_name='Rock').put()
+            Professor(user_name='SampleProfessor', password='pass123', first_name='Jayson', last_name='Rock').put()
             Student(user_name='SampleStudent', password='pass234', first_name='Kylie', last_name='Weber').put()
 
         if 'username' in self.session and self.session['username']:
@@ -94,19 +96,20 @@ class MainHandler(BaseHandler):
             else:
                 self.redirect('/')
 
-				
+
 class StudentHome(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             students = Student.query(Student.user_name == username).fetch()
             if students:
-                questions = list(Question.query())
-                render_parameter = {}
-                render_parameter['questions'] = questions
-                render_parameter['user'] = username
+                student = students[0]
                 template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
-                self.response.write(template.render(render_parameter))
+                self.response.write(template.render({
+                    'answered_questions': student.get_answered_questions,
+                    'unanswered_questions': student.get_unanswered_questions,
+                    'user': student.first_name+" "+student.last_name
+                }))
             else:
                 self.response.write("Invalid Credentials")
                 self.redirect('/')
@@ -117,14 +120,14 @@ class StudentHome(BaseHandler):
 
 class AdminHome(BaseHandler):
     def get(self):
-        questions = list(Question.query())
-        render_parameter = {}
-        render_parameter['questions'] = questions
+        questions = list(Question.query().fetch())
+        render_parameter = {'questions': questions}
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
-            render_parameter['username'] = username
             profs = Professor.query(Professor.user_name == username).fetch()
+            prof = profs[0]
             if profs:
+                render_parameter['username'] = prof.first_name + " " + prof.last_name
                 template = JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
                 self.response.write(template.render(render_parameter))
             else:
@@ -133,14 +136,13 @@ class AdminHome(BaseHandler):
         else:
             self.response.write("Invalid Credentials")
             self.redirect('/')
+
     def post(self):
         question = self.request.get('q')
         question.answer = self.request.get('txtInput')
 
         template = JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
-        self.response.write(template.render( {
-
-            } ))
+        self.response.write(template.render())
 
 
 class StudentAccountSettings(BaseHandler):
@@ -148,11 +150,13 @@ class StudentAccountSettings(BaseHandler):
         template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
         self.response.write(template.render())
 
+
 class AdminAccountSettings(BaseHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
-        self.response.write(template.render()) 
-	
+        self.response.write(template.render())
+
+
 class SubmitQuestion(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
@@ -168,8 +172,6 @@ class SubmitQuestion(BaseHandler):
             self.response.write("Invalid Credentials")
             self.redirect('/')
 
-        template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
-        self.response.write(template.render())
     def post(self):
         question = self.request.get("questionInput")
         logging.info(question)
@@ -177,20 +179,19 @@ class SubmitQuestion(BaseHandler):
         user = User.query(User.user_name == username).fetch()
         user_key = user[0].key
         Question(parent=user_key, question=question, username=username, isFAQ=False).put()
-        html="""
+        html = """
             <h3>Question Submitted!</h3>
             <form action="/" method="GET">
                 <input id="homeButton" type='submit' value='Home'/></div>
-			</form>
+            </form>
         """
         self.response.write(html)
-
 
 
 class SubmitFAQ(BaseHandler):  # what is this even for?
     def get(self):
         if 'username' in self.session and self.session['username']:
-            html="""<form action='/submitfaq' method = 'POST'>
+            html = """<form action='/submitfaq' method = 'POST'>
             <textarea name = "inputtedQ" rows = "3" cols = "50">
                 Question area
             </textarea>
@@ -223,6 +224,8 @@ class QuestionQueue(BaseHandler):
                 qqtab = 2
             elif self.request.get('ByStudent'):
                 qqtab = 3
+            elif self.request.get('FAQs'):
+                self.redirect('/FAQADMIN')
             if profs:
                 user = profs[0]
 
@@ -245,14 +248,6 @@ class FAQ(BaseHandler):
         if 'username' in self.session and self.session['username']:
             template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
             questions = Question.query().fetch()
-            if not questions:
-                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                              answer='He wont even invite us to Thanksgiving :(').put()
-                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?').put()
-                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?').put()
-
             self.response.write(template.render({
                 'questions': questions
             }))
@@ -268,17 +263,6 @@ class FAQADMIN(BaseHandler):
             logging.info("3")
             template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
             questions = Question.query().fetch()
-            # if there's no questions currently in the queue put some in
-            if not questions:
-                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                              answer='He wont even invite us to Thanksgiving :(').put()
-                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?').put()
-                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?').put()
-                time.sleep(1) # give time for datastore
-                questions = Question.query().fetch()
-                logging.info(questions[1])
             logging.info(questions[0])
             self.response.write(template.render({
                 'questions': questions
@@ -286,11 +270,11 @@ class FAQADMIN(BaseHandler):
         else:
             self.redirect('/')
 
-
     def post(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
         self.request.get("q")
         self.response.write(template.render( { } ))
+
 
 class FAQDelete(BaseHandler):
     def get(self):
@@ -301,6 +285,7 @@ class FAQDelete(BaseHandler):
         logging.info(question_key)
         question_key.key.delete()
         self.redirect('/FAQADMIN')
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -317,7 +302,7 @@ class TestPage(webapp2.RequestHandler):
         logging.info(testing_class.test_results.testsRun)
         template = JINJA_ENVIRONMENT.get_template('templates/testPage.html')
         logging.info(len(testing_class.list_results_all))
-        self.response.write(template.render({'test_results':testing_class.list_results_all}))
+        self.response.write(template.render({'test_results': testing_class.list_results_all}))
 
 
 class RegisterStudents(BaseHandler):

@@ -43,8 +43,12 @@ class Student(User):
 
     # method to get unseen questions
     @property
-    def get_all_unseen_questions(self, items):
-        return Question.query(Question.unSeen(True), ancestor=self.key).fetch()
+    def get_unanswered_questions(self):
+        return Question.query(Question.unAnswered == True, ancestor=self.key).order(-Question.date_created).fetch()
+
+    @property
+    def get_answered_questions(self):
+        return Question.query(Question.unAnswered == False, ancestor=self.key).order(-Question.date_answered).fetch()
 
 
 class Professor(User):

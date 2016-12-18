@@ -13,16 +13,15 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 	<body>
 		
 		<div class="pagetitle">
-			
 			<h1>Frequently Asked Questions</h1>	
-				</div>
+		</div>
 		
 		<div>
 			<ul class="navbar">
 				<li class="navitem">
 					<form action="/" method="GET"> <input class="navlink" type='submit' value='Home'> </form></li>
 				<li class="navitem">
-					<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='View QuestionQueue'> </form></li>
+					<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='My QuestionQueue'> </form></li>
 				<li class="navitem">
 					<form action="/FAQADMIN" method="GET"> <input class="current navlink" type='submit' value='FAQs'> </form></li>
 				<li class="navitem">
@@ -32,6 +31,9 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 				<li class="navitem">
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
+		</div>
+		<div class="header">
+			<h2>View and Edit FAQs!</h2>
 		</div>
 		<div class = "faq">
 				{% for q in questions %}
