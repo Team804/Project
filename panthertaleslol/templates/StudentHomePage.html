@@ -25,15 +25,41 @@
 			</ul>
 	</div>
 	<div class="header">
-		<h2>Hello {{ username }}  </h2>
+		<h2>Hello, {{ user }}  </h2>
 	</div>
 	<div class="sectiontitle">
 		<div class="container">
-			<h3>My Questions</h3>
+			<h3>My Unanswered Questions</h3>
 			<ul>
-				{% for i in myQuestions %}
-					{# TODO: add links to each question dialog page? #}
-				<li><a href="/submitquestion">{{i}}</a></li>
+				{% for q in questions %}
+					{% if q.username == user %}
+						<li>{{q.question}}</li>
+						{% if not q.answer %}
+							<h1 id={{q.question}} style="display:none;" > </h1>
+							<ul style="font-size:75%;">
+								Asked on {{q.date_created}}
+							</ul>
+							<br/>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</ul>
+			<h3>My Answered Questions</h3>
+			<ul>
+				{% for q in questions %}
+					{% if q.username == user %}
+						{% if q.answer %}
+							<li>{{q.question}}</li>
+							<h1 id={{q.question}} style="display:none;" > </h1>
+							<ul style="font-size:75%;">
+								Asked on {{q.date_created}}
+							</ul>
+							<ul>
+								{{q.answer}}
+							</ul>
+							<br/>
+						{% endif %}
+					{% endif %}
 				{% endfor %}
 			</ul>
 		</div>
