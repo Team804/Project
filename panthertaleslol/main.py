@@ -101,8 +101,12 @@ class StudentHome(BaseHandler):
             username = self.session['username']
             students = Student.query(Student.user_name == username).fetch()
             if students:
+                questions = list(Question.query())
+                render_parameter = {}
+                render_parameter['questions'] = questions
+                render_parameter['user'] = username
                 template = JINJA_ENVIRONMENT.get_template('templates/StudentHomePage.html')
-                self.response.write(template.render())
+                self.response.write(template.render(render_parameter))
             else:
                 self.response.write("Invalid Credentials")
                 self.redirect('/')
@@ -113,18 +117,31 @@ class StudentHome(BaseHandler):
 
 class AdminHome(BaseHandler):
     def get(self):
+        questions = list(Question.query())
+        render_parameter = {}
+        render_parameter['questions'] = questions
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
+            render_parameter['username'] = username
             profs = Professor.query(Professor.user_name == username).fetch()
             if profs:
                 template = JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
-                self.response.write(template.render())
+                self.response.write(template.render(render_parameter))
             else:
                 self.response.write("Invalid Credentials")
                 self.redirect('/')
         else:
             self.response.write("Invalid Credentials")
             self.redirect('/')
+    def post(self):
+        question = self.request.get('q')
+        question.answer = self.request.get('txtInput')
+
+        template = JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
+        self.response.write(template.render( {
+
+            } ))
+
 
 class StudentAccountSettings(BaseHandler):
     def get(self):
@@ -159,7 +176,7 @@ class SubmitQuestion(BaseHandler):
         username = self.session['username']
         user = User.query(User.user_name == username).fetch()
         user_key = user[0].key
-        Question(parent=user_key, question=question, isFAQ=False).put()
+        Question(parent=user_key, question=question, username=username, isFAQ=False).put()
         html="""
             <h3>Question Submitted!</h3>
             <form action="/" method="GET">
@@ -195,6 +212,7 @@ class SubmitFAQ(BaseHandler):  # what is this even for?
 
 class QuestionQueue(BaseHandler):
     def get(self):
+        questions = list(Question.query())
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             profs = Professor.query(Professor.user_name == username).fetch()
@@ -207,19 +225,12 @@ class QuestionQueue(BaseHandler):
                 qqtab = 3
             if profs:
                 user = profs[0]
-                q1 = Question(isFAQ=True, question='Why does Kyle hate us?',
-                              answer='He wont even invite us to Thanksgiving :(')
-                q2 = Question(isFAQ=True, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?')
-                q3 = Question(isFAQ=False, question='Seriously, Kyle doesnt even like penguins',
-                              answer='What is wrong with that man?')
+
                 template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
                 self.response.write(template.render({
                     'user': user,
-                    'q1s': q1.question,
-                    'q2s': q2.question,
-                    'q3s': q3.question,
-                    'QQTAB': qqtab
+                    'QQTAB': qqtab,
+                    'questions' : questions
                 }))
             else:
                 self.response.write("Invalid Credentials")
@@ -278,12 +289,8 @@ class FAQADMIN(BaseHandler):
 
     def post(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
-        self.request.get("question")
-        #query student class to find relevant question idk how check labs
-        #edit said question using fetchedQuestion.fieldToEdit = x
-        self.response.write(template.render( {
-
-            } ))
+        self.request.get("q")
+        self.response.write(template.render( { } ))
 
 class FAQDelete(BaseHandler):
     def get(self):
@@ -395,6 +402,7 @@ class FirstLogin(BaseHandler):
         else:
             template = JINJA_ENVIRONMENT.get_template('templates/firstlogin.html')
             self.response.write(template.render({'user': user, 'first_time': False, 'password_match': False}))
+
 
 
 config = {

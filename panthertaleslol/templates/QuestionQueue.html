@@ -1,5 +1,4 @@
 {# parameters- user: user object and QQTAB: variable containing currently active Queue Tab #}
-<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>Question Queue</title>
@@ -39,29 +38,22 @@
 			</ul>
 			</form>
 			{% if QQTAB == 1 %}
-			<div><ul>
-			<li>{{ q1s }}</li>
-			<li><textarea rows="4" cols="50"></textarea></li>
+			<div>
+				{% for q in questions %}
+                    {% if not q.answer %}
+                        <li><a href="/questionqueue"> {{q.question}} </a></li> {# Redirects to question queue when clicked on #}
+                        <ul>
+                            {# TODO: Display user and date created #}
+                        </ul>
+                        <br/>
+                    {% endif %}
+				{% endfor %}
+		{#	<li><textarea rows="4" cols="50"></textarea></li>
 			<li><input type='submit'></li>
-			</ul></div>
+		#}
+			</div>
 			{% elif QQTAB ==2 %}
-			<div><ul>
-			<li>{{ q1s }}</li>
-			<li><textarea rows="4" cols="50"></textarea></li>
-			<li><input type='submit'></li>
-			<li>{{ q2s }}</li>
-			<li><textarea rows="4" cols="50"></textarea></li>
-			<li><input type='submit'></li>			
-			</ul></div>
 			{% else %}
-			<div><ul>
-			<li>Student1: {{ q1s }}</li>
-			<li><textarea rows="4" cols="50"></textarea></li>
-			<li><input type='submit'></li>			
-			<li>Student2: {{ q2s }}</li>
-			<li><textarea rows="4" cols="50"></textarea></li>
-			<li><input type='submit'></li>
-			</ul></div>
 			{% endif %}
 		</div>
 		<div class="footer">
