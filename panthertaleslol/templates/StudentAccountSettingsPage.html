@@ -28,11 +28,11 @@
 	{% if password_match == False %}
 		<h4><div id="loginheader" style="color: red;">ERROR: Passwords don't match!</div></h4>
 	{% endif %}
-	<div class="questionblock" "settings" style="margin-left: 40px;">
-		<form action='/myFirstLogin' method='POST' >
+	<div class="settings" style="margin-left: 40px;">
+		<form action="/studentaccountsettings" method='POST' >
 			<div class="settingfield">First Name: <input type='text' name='first_name' value="{{user.first_name}}"/></div>
 			<div class="settingfield">Last Name: <input type='text' name='last_name' value="{{user.last_name}}"/></div>
-			<h4 id="loginheader">Passwords must be longer than 3 characters and contain a number.</h4>
+			<h4 id="loginheader" style="text-align: center;">Passwords must be longer than 3 characters and contain a number.</h4>
 			<div class="settingfield">New Password: <input type="password" name="first_pass"/></div>
 			<div class="settingfield">Retype Password: <input type="password" name="second_pass"/></div>
 			<input class="stdbutton" type='submit' value='Submit' />

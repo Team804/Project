@@ -1,41 +1,48 @@
 <html>
-<head>
-	<title>Account Settings</title>
-	<link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-	 <div class="pagetitle">
-                <div class="container">
-                        <h1>Account Settings</h1>
-                </div>
-        </div>
+	<head>
+		<title>Account Settings</title>
+		<link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="pagetitle">
+				<h1>Account Settings</h1>
+		</div>
 	<div>
 		<ul class="navbar">
-			
-<li class="navitem">
-<form action="/" method="GET"> <input class="navlink" type='submit' value='Home'> </form></li>
-	<li class="navitem">
-<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='My QuestionQueue'> </form></li>
-			
-<li class="navitem">
-<form action="/FAQADMIN" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
-	<li class="navitem"><form action="/registerStudents" method="GET"> <input class="navlink" type='submit' value='Register Students'> </form></li>
-	
-<li class="navitem"><form action="/adminaccountsettings" method="GET"> <input class="current navlink" type='submit' value='Account'> </form></li>
-			
-<li class="navitem">
-<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
-			</ul>
-
-	</div>
-  	<div class="header">
-                <h2>Account Settings</h2>
-    </div>
-  
-
-        <div class="footer">
-                <h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
-                <h6 id="group">Group Team 804</h6>
+			<li class="navitem">
+				<form action="/" method="GET"> <input class="navlink" type='submit' value='Home'> </form></li>
+			<li class="navitem">
+				<form action="/questionqueue" method="GET"> <input class="navlink" type='submit' value='My QuestionQueue'> </form></li>
+			<li class="navitem">
+				<form action="/FAQADMIN" method="GET"> <input class="navlink" type='submit' value='FAQs'> </form></li>
+			<li class="navitem">
+				<form action="/registerStudents" method="GET"> <input class="navlink" type='submit' value='Register Students'> </form></li>
+			<li class="navitem">
+                                <form action="/adminaccountsettings" method="GET"> <input class="current navlink" type='submit' value='Account'> </form></li>
+			<li class="navitem">
+				<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
+		</ul>
+	</div>	
+		<div class="header">
+			<h2>Change Your Settings Here!</h2>
         </div>
+    <h4 id="loginheader">Preferred Name and Password Change</h4>
+	{% if password_match == False %}
+		<h4><div id="loginheader" style="color: red;">ERROR: Passwords don't match!</div></h4>
+	{% endif %}
+	<div class="settings" style="margin-left: 40px;">
+		<form action="/adminaccountsettings" method='POST'>
+			<div class="settingfield">First Name: <input type='text' name='first_name' value="{{user.first_name}}"/></div>
+			<div class="settingfield">Last Name: <input type='text' name='last_name' value="{{user.last_name}}"/></div>
+			<h4 id="loginheader" style="text-align: center;">Passwords must be longer than 3 characters and contain a number.</h4>
+			<div class="settingfield">New Password: <input type="password" name="first_pass"/></div>
+			<div class="settingfield">Retype Password: <input type="password" name="second_pass"/></div>
+			<input class="stdbutton" type='submit' value='Submit' />
+		</form>
+	</div>
+	<div class="footer">
+		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
+        <h6 id="group">Group Team 804</h6>
+    </div>
   </body>
 </html>

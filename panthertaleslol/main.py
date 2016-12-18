@@ -131,11 +131,17 @@ class AdminHome(BaseHandler):
                 template = JINJA_ENVIRONMENT.get_template('templates/AdministratorHomePage.html')
                 self.response.write(template.render(render_parameter))
             else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+                html = """<html>
+                <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+                <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+                """
+                self.response.write(html)
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
 
     def post(self):
         question = self.request.get('q')
@@ -156,8 +162,11 @@ class StudentAccountSettings(BaseHandler):
             template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
             self.response.write(template.render({'user': student}))
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
 
     def post(self):
         username = self.session['username']
@@ -187,24 +196,34 @@ class AdminAccountSettings(BaseHandler):
             template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
             self.response.write(template.render({'user': prof}))
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
 
     def post(self):
         username = self.session['username']
         logging.info(username)
         prof = Professor.query(Professor.user_name == username).fetch()[0]
-        if self.request.get('first_pass') == self.request.get('second_pass'): #check if passwords match
-            logging.info(self.request.get('first_pass'))
-            if prof.change_password(self.request.get('first_pass')): # password change successful
-                prof.put()
-                self.redirect('/')
+        if not prof:
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
+        else:
+            if self.request.get('first_pass') == self.request.get('second_pass'): #check if passwords match
+                logging.info(self.request.get('first_pass'))
+                if prof.change_password(self.request.get('first_pass')): # password change successful
+                    prof.put()
+                    self.redirect('/')
+                else:
+                    template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
+                    self.response.write(template.render({'user': prof}))
             else:
                 template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
-                self.response.write(template.render({'user': prof}))
-        else:
-            template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
-            self.response.write(template.render({'user': prof, 'password_match': False}))
+                self.response.write(template.render({'user': prof, 'password_match': False}))
 
 
 class SubmitQuestion(BaseHandler):
@@ -219,11 +238,17 @@ class SubmitQuestion(BaseHandler):
                     'emptyfield': False
                 }))
             else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+                html = """<html>
+                <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+                <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+                """
+                self.response.write(html)
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
 
     def post(self):
         question = self.request.get('questionInput')
@@ -259,8 +284,11 @@ class SubmitFAQ(BaseHandler):  # what is this even for?
             """
             self.response.write(html)
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
 
     def post(self):
         Question(isFAQ=True, question=self.request.get('inputtedQ'), answer=self.request.get('inputtedA')).put()
@@ -269,7 +297,9 @@ class SubmitFAQ(BaseHandler):  # what is this even for?
 
 class QuestionQueue(BaseHandler):
     def get(self):
-        questions = list(Question.query())
+        unanswered_questions = Question.query(Question.unAnswered == True).order(-Question.date_created).fetch()
+        recent_questions = Question.query().order(-Question.date_answered).fetch(6)
+        students = Student.query().fetch()
         if 'username' in self.session and self.session['username']:
             username = self.session['username']
             profs = Professor.query(Professor.user_name == username).fetch()
@@ -283,20 +313,44 @@ class QuestionQueue(BaseHandler):
             elif self.request.get('FAQs'):
                 self.redirect('/FAQADMIN')
             if profs:
-                user = profs[0]
-
                 template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
                 self.response.write(template.render({
-                    'user': user,
                     'QQTAB': qqtab,
-                    'questions' : questions
+                    'unanswered_questions': unanswered_questions,
+                    'recent_questions': recent_questions,
+                    'students': students
                 }))
             else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+                html = """<html>
+                <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+                <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+                """
+                self.response.write(html)
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
+
+    def post(self):
+        unanswered_questions = Question.query(Question.unAnswered == True).fetch()
+        recent_questions = Question.query().order(-Question.date_answered).fetch(6)
+        all_questions = Question.query().fetch()
+        students = Student.query().fetch()
+        if self.request.get('Answer'):
+            template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
+            self.response.write(template.render({
+                'QQTAB': qqtab,
+                'all_questions': all_questions,
+                'unanswered_questions': unanswered_questions,
+                'recent_questions': recent_questions,
+                'students': students
+            }))
+        elif self.request.get('MakeFAQ'):
+            pass
+        elif self.request.get('Delete'):
+            pass
 
 
 class FAQ(BaseHandler):
@@ -314,22 +368,24 @@ class FAQ(BaseHandler):
 class FAQADMIN(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
-            username = self.session['username']
-            profs = Professor.query(Professor.user_name == username).fetch()
-            logging.info("3")
             template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
-            questions = Question.query().fetch()
-            logging.info(questions[0])
+            questions = Question.query(Question.isFAQ == True).order(-Question.date_created).fetch()
+            logging.info(questions)
             self.response.write(template.render({
                 'questions': questions
-                }))
+            }))
         else:
-            self.redirect('/')
+            html = """<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
+
 
     def post(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
         self.request.get("q")
-        self.response.write(template.render( { } ))
+        self.response.write(template.render({}))
 
 
 class FAQDelete(BaseHandler):
@@ -370,11 +426,18 @@ class RegisterStudents(BaseHandler):
                 template = JINJA_ENVIRONMENT.get_template('templates/RegisterStudentsPage.html')
                 self.response.write(template.render())
             else:
-                self.response.write("Invalid Credentials")
-                self.redirect('/')
+                html = """<html>
+                <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+                <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+                """
+                self.response.write(html)
         else:
-            self.response.write("Invalid Credentials")
-            self.redirect('/')
+            html="""<html>
+            <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
+            <body style="color: red;"> Invalid Credentials, you are being redirected.</body></html>
+            """
+            self.response.write(html)
+
 
     def post(self):
         input_list = self.request.get('inputText')

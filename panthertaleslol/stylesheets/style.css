@@ -72,7 +72,7 @@ html, body {
     font-size: 16px;
 	margin: 0 auto;
 	text-align: center;
-	margin: auto;
+	margin: 0 auto;
 	margin-top: 32px;
 }
 
@@ -87,6 +87,19 @@ html, body {
 	list-style: none;
 }
 
+.accountblock{
+	display: inline-block;
+	white-space: pre-wrap;
+	padding: 16px;
+	margin: 0 auto;
+	margin-right: 40px;
+    border: 3px outset;
+	background-color: #f8f8f8;
+	border-color: #333333;
+	
+	width: 60%; 
+}
+
 .questionblock{
 	display: block;
 	white-space: pre-wrap;
@@ -98,11 +111,11 @@ html, body {
     border: 3px outset;
 	background-color: #f8f8f8;
 	border-color: #333333;
-	text-align: center;
 }
 			
 .timestamp{
 	font-size: 12;
+	font-weight: bold;
 	padding: 0;
 	margin: auto;
 }
@@ -110,10 +123,10 @@ html, body {
 .QQDIV{
 	width: 1160px;
 	top: 125px;
-	height: 600px;
 	position: relative;
     margin: auto;
     border: 2px outset;
+	background-color: #f8f8f8;
 	}
 		
 .QBOX{
@@ -126,6 +139,8 @@ html, body {
 	
 .QITEM{
 	float: left;
+	margin-right: 0;
+	margin-left: 0;
 	}
 	
 .QBUTTON{
@@ -136,6 +151,8 @@ html, body {
 	text-decoration: none;
 	background: #333333;
 	border: none;
+	margin-right: 0;
+	margin-left: 0;
 	font-size: 16px;
 }
 

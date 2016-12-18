@@ -25,13 +25,19 @@
 				<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 		</ul>
 	</div>
-		<div class="header">
-			<h2>Add New Students or TAs!</h2>
-		</div>
-  <form action='/registerStudents' method='POST'>
-			<textarea name="inputText" rows="25" cols="50">Paste Student list here
-			</textarea>
-	  	<input type="submit" value="submit">
-	</form>
+	<div class="header">
+		<h2>Add New Students or TAs!</h2>
+	</div>
+	<h4><div id="loginheader">Register new users in this format: Last Name, First Name, Username, User Type (Admin or Student) </div></h4>
+	<div class="settings" style="margin-left: 40px;">
+		<form action='/registerStudents' method='POST'>
+			<div class="submitquestion">
+				<textarea id="areastyle" autofocus="autofocus" name="inputText" rows="25" cols="50"></textarea>
+			</div>
+			<div class="submitquestion">
+				<input class="stdbutton" type="submit" value="Register">
+			</div>
+		</form>
+	</div>
   </body>
 </html>

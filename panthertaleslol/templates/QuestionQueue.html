@@ -21,7 +21,7 @@
 				<li class="navitem">
 					<form action="/registerStudents" method="GET"> <input class="navlink" type='submit' value='Register Students'> </form></li>
 				<li class="navitem">
-                                	<form action="/adminaccountsettings" method="GET"> <input class="navlink" type='submit' value='Account'> </form></li>
+                    <form action="/adminaccountsettings" method="GET"> <input class="navlink" type='submit' value='Account'> </form></li>
 				<li class="navitem">
 					<form action="/logout" method="GET"> <input class="navlink" type='submit' value='Logout'> </form></li>
 			</ul>
@@ -30,35 +30,107 @@
 			<h2>View Your Queue and Answer Questions!</h2>
 		</div>
 		<div class = "QQDIV">
-		<form action='/questionqueue' method='GET'>
-			<ul class = 'QBOX'> 
-				<li class = 'QITEM'>
-					<input type='submit' class={% if QQTAB == 1 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='NewQ' value='New Questions'></li>
-				<li class = 'QITEM'>
-					<input type='submit' class={% if QQTAB == 2 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='RecentQ' value='Recent Questions'></li>
-				<li class = 'QITEM'>
-					<input type='submit' class={% if QQTAB == 3 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name='ByStudent' value='By Student'></li>
-				<li class = 'QLINK'>
-					<input class='QBUTTON' type='submit' name='FAQs' value='FAQs'>
-			</ul>
+			<form action='/questionqueue' method='GET'>
+				<ul class = 'QBOX'> 
+					<li class = 'QITEM'>
+						<button class={% if QQTAB == 1 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name="NewQ" value=1 type="submit">Unanswered Questions</button></li>
+					<li class = 'QITEM'>
+						<button class={% if QQTAB == 2 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name="RecentQ" value=2 type="submit">Recent Questions</button></li>
+					<li class = 'QITEM'>
+						<button class={% if QQTAB == 3 %}'current QBUTTON' {% else %} 'QBUTTON' {% endif %} name="ByStudent" value=3 type="submit">By Student</button></li>
+					<li class = 'QLINK'>
+						<input class='QBUTTON' type='submit' name='FAQs' value='FAQs'></li>
+				</ul>
 			</form>
 			{% if QQTAB == 1 %}
 			<div>
-				{% for q in questions %}
-                    {% if not q.answer %}
-                        <li><a href="/questionqueue"> {{q.question}} </a></li> {# Redirects to question queue when clicked on #}
-                        <ul>
-                            {# TODO: Display user and date created #}
-                        </ul>
-                        <br/>
-                    {% endif %}
-				{% endfor %}
-		{#	<li><textarea rows="4" cols="50"></textarea></li>
-			<li><input type='submit'></li>
-		#}
+				<ul class="questionlist">
+					{% for q in unanswered_questions %}
+						<li class="questionblock" style="whitespace: normal;">
+							<div>
+								<p class="timestamp">Asked on {{ q.date_created }}</p>
+								<p style="word-wrap: break-word;">{{ q.question }}</p>
+							</div>
+							<div style="display: inline; text-align: center;>
+								<form action="/questionqueue" method="POST">
+									<div><button class='stdbutton' name="Answer" value='{{q.get_url_safe_key()}}' type="submit" style="margin-right: 8px;">Answer This Question</button> <button class='stdbutton' name="MakeFAQ" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px; margin-right: 8px;">Make FAQ</button> <button class='stdbutton' name="Delete" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px;">Delete this Question</button></div>
+								</form>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+				{#	<li><textarea rows="4" cols="50"></textarea></li>
+				<li><input type='submit'></li>
+				#}
 			</div>
-			{% elif QQTAB ==2 %}
+			{% elif QQTAB == 2 %}
+			<div>
+				<ul class="questionlist">
+					{% for q in recent_questions %}
+						<li class="questionblock" style="whitespace: normal;">
+							<div>
+									{% if q.answer %}
+										<div>
+											<p class="timestamp">Asked on {{ q.date_created }}</p>
+											<p style="word-wrap: break-word;">{{ q.question }}</p>
+											<p class="timestamp">Answered on {{ q.date_answered }}</p>
+											<p style="word-wrap: break-word;">{{ q.answer }}</p>
+										</div>
+										<div><form action="/questionqueue" method="POST"><button class='stdbutton' name="Answer" value='{{q.get_url_safe_key()}}' type="submit" style="margin-right: 8px;">Edit This Question</button> <button class='stdbutton' name="MakeFAQ" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px; margin-right: 8px;">Make FAQ</button> <button class='stdbutton' name="Delete" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px;">Delete this Question</button></form></div>
+									{% else %}
+										<div>
+											<p class="timestamp">Asked on {{ q.date_created }}</p>
+											<p style="word-wrap: break-word;">{{ q.question }}</p>
+										</div>
+										<div><form action="/questionqueue" method="POST"><button class='stdbutton' name="Answer" value='{{q.get_url_safe_key()}}' type="submit" style="margin-right: 8px;">Answer This Question</button> <button class='stdbutton' name="MakeFAQ" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px; margin-right: 8px;">Make FAQ</button> <button class='stdbutton' name="Delete" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px;">Delete this Question</button></form></div>
+									{% endif %}
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+				{#	<li><textarea rows="4" cols="50"></textarea></li>
+				<li><input type='submit'></li>
+				#}
+			</div>
 			{% else %}
+			<div>
+				<ul class="collapsible" data-collapsible="accordion">
+					{% for s in students %}
+						<li>
+							<div class="collapsible-header">{{ s.user_name }}</div>
+								<div class="collapsible-body">
+									<ul class="collapsible" data-collapsible="accordion">
+										{% for q in s.get_all_questions %}
+											<li>
+												<div class="collapsible-header"> {{ q.date_created }} {{ q.question }}</div>
+													<div class="collapsible-body">
+													{% if q.answer %}
+															<div>
+																<p class="timestamp">Asked on {{ q.date_created }}</p>
+																<p style="word-wrap: break-word;">{{ q.question }}</p>
+																<p class="timestamp">Answered on {{ q.date_answered }}</p>
+																<p style="word-wrap: break-word;">{{ q.answer }}</p>
+															</div>
+															<div><form action="/questionqueue" method="POST"><button class='stdbutton' name="Answer" value='{{q.get_url_safe_key()}}' type="submit" style="margin-right: 8px;">Edit This Question</button> <button class='stdbutton' name="MakeFAQ" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px; margin-right: 8px;">Make FAQ</button> <button class='stdbutton' name="Delete" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px;">Delete this Question</button></form></div>
+														{% else %}
+															<div>
+																<p class="timestamp">Asked on {{ q.date_created }}</p>
+																<p style="word-wrap: break-word;">{{ q.question }}</p>
+															</div>
+															<div><form action="/questionqueue" method="POST"><button class='stdbutton' name="Answer" value='{{q.get_url_safe_key()}}' type="submit" style="margin-right: 8px;">Answer This Question</button> <button class='stdbutton' name="MakeFAQ" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px; margin-right: 8px;">Make FAQ</button> <button class='stdbutton' name="Delete" value='{{q.get_url_safe_key()}}' type="submit" style="margin-left: 8px;">Delete this Question</button></form></div>
+														{% endif %}
+													</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+						</li>
+					{% endfor %}
+				</ul>
+				{#	<li><textarea rows="4" cols="50"></textarea></li>
+				<li><input type='submit'></li>
+				#}
+			</div>
 			{% endif %}
 		</div>
 		<div class="footer">

@@ -17,6 +17,12 @@ indexes:
     direction: desc
 
 - kind: Question
+  properties:
+  - name: unAnswered
+  - name: date_created
+    direction: desc
+
+- kind: Question
   ancestor: yes
   properties:
   - name: unAnswered
