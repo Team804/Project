@@ -13,6 +13,7 @@ class Question(ndb.Model):
     date_answered = ndb.DateTimeProperty(auto_now=True)
     # bool flag to see if question has been looked at for future implementation maybe?
     unAnswered = ndb.BooleanProperty(default=True)
+    answeredBy = ndb.StringProperty()
 
     def get_url_safe_key(self):
         return self.key.urlsafe()

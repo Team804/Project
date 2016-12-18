@@ -11,9 +11,8 @@ indexes:
 # your application using appcfg.py.
 
 - kind: Question
-  ancestor: yes
   properties:
-  - name: unAnswered
+  - name: isFAQ
   - name: date_created
     direction: desc
 
@@ -35,3 +34,10 @@ indexes:
   properties:
   - name: unAnswered
   - name: date_created
+
+- kind: Question
+  ancestor: yes
+  properties:
+  - name: unAnswered
+  - name: date_created
+    direction: desc

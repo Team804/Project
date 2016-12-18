@@ -22,40 +22,89 @@ html, body {
 	left: 575px;
 }
 
-.pendingqlist{
+#areastyle{
+	border-radius: 4px;
+	resize: none;
+    border: 2px solid #ccc;
+    background-color: #f8f8f8;
+	height: 200px;
+	width: 100%;
+}
+
+#loginheader{
+	text-align: center;
+}
+
+.settings{
+	border-radius: 4px;
+	display: block;
+	padding: 16px;
+	padding-top: 0px;
+    margin-right: 40px;
+	margin-bottom: 8px;
+    border: 3px outset;
+	background-color: #f8f8f8;
+	border-color: #333333;
+	text-align: center;
+}
+
+.settingfield{
+	display: inline-block;
+	margin: 0 auto;
+	padding: 8px;
+}
+.submitquestion{
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-bottom: 16px;
+	padding: 16px;
+	text-align: center;
+}
+
+.stdbutton{
+	background-color: #333333;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	margin: 0 auto;
+	text-align: center;
+	margin: auto;
+	margin-top: 32px;
+}
+
+.stdbutton:hover, .current{
+	background-color: #FFBD00;
+	overflow: 16px;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.questionlist{
 	list-style: none;
 }
 
-.pendingqitem{
-	display: inline-block;
+.questionblock{
+	display: block;
 	white-space: pre-wrap;
 	word-break: break-all;
 	padding: 16px;
+	padding-top: 0px;
     margin-right: 40px;
-	margin-bottom: 16px;
-    border: 2px outset;
-	background-color: #ffffe6;
-}
-
-.answeredqlist{
-	list-style: none;
-}
-
-.answeredqitem{
-	display: inline-block;
-	white-space: pre-wrap;
-	word-break: break-all;
-	padding: 16px;
-    margin-right: 40px;
-	margin-bottom: 16px;
-    border: 2px outset;
-	background-color: #ffffe6;
+	margin-bottom: 8px;
+    border: 3px outset;
+	background-color: #f8f8f8;
+	border-color: #333333;
+	text-align: center;
 }
 			
 .timestamp{
 	font-size: 12;
 	padding: 0;
-	margin: 0;
+	margin: auto;
 }
 			
 .QQDIV{
@@ -102,9 +151,11 @@ html, body {
 	margin: 0;
 }
 	
-.QBUTTON:hover, .current {
+.QBUTTON:hover, .current{
 	background-color: #FFBD00;
-	overflow: 16px
+	overflow: 16px;
+	cursor: hand;
+	cursor: pointer;
 }	
 	
 .navbar {
@@ -135,15 +186,18 @@ html, body {
 		
 .navlink:hover, .current {
 	background-color: #FFBD00;
-	overflow: 16px
+	overflow: 16px;
+	cursor: hand;
+	cursor: pointer;
 }
 						
-#protobutton:hover, .current{
+.protobutton:hover, .current{
 	background-color: #FFBD00;
 	cursor: pointer;
 	cursor: hand;
 }
-#protobutton{
+
+.protobutton{
 	position: relative;
 	left: 35px;
 	margin: auto;
@@ -197,7 +251,7 @@ html, body {
 	overflow: hidden;
 }
 form{
-margin-bottom: 0em;	
+	margin-bottom: 0em;	
 }
 
 .pagetitle h1 {

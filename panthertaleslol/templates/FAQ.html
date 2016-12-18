@@ -34,18 +34,9 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 			<h2>View FAQs!</h2>
 		</div>
 		<div class = "faq">
-			<form action="/FAQADMIN" method="GET">
 				{% for q in questions %}
-                    {% if q.isFAQ %}
-                    <li>
-                        {{ q.question }}
-                        <ul>
-                            {{ q.answer }}
-                        </ul>
-                    </li>
-                    {% endif %}
+                   <li class="questionblock" style="margin-left: 40px;"><p class="timestamp">Asked on {{ q.date_created }} By: {{q.username}}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }} by {{q.answeredBy}}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
                 {% endfor %}
-			</form>
 		</div>
 	</body>
 </html>

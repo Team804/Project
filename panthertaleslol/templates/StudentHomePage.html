@@ -30,17 +30,17 @@
 	</div>
 	<div class="mypendingqs">
 			<h3>My Pending Questions</h3>
-			<ul class="pendingqlist">
+			<ul class="questionlist">
 				{% for q in unanswered_questions %}
-					<li class="pendingqitem"> <p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p></li>
+					<li class="questionblock"> <p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p></li>
 				{% endfor %}
 			</ul>
 	</div>
 	<div class="myansweredqs">
 			<h3>My Answered Questions</h3>
-			<ul class="answeredqlist">
+			<ul class="questionlist">
 				{% for q in answered_questions %}
-					<li class="answeredqitem"><p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
+					<li class="questionblock"><p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
 				{% endfor %}
 			</ul>
 	</div>

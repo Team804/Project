@@ -147,14 +147,64 @@ class AdminHome(BaseHandler):
 
 class StudentAccountSettings(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
-        self.response.write(template.render())
+        username = self.session['username']
+        logging.info(username)
+        students = Student.query(Student.user_name == username).fetch()
+        student = students[0]
+        if student:
+            logging.info(student)
+            template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
+            self.response.write(template.render({'user': student}))
+        else:
+            self.response.write("Invalid Credentials")
+            self.redirect('/')
+
+    def post(self):
+        username = self.session['username']
+        logging.info(username)
+        student = Student.query(Student.user_name == username).fetch()[0]
+        if self.request.get('first_pass') == self.request.get('second_pass'): #check if passwords match
+            logging.info(self.request.get('first_pass'))
+            if student.change_password(self.request.get('first_pass')): # password change successful
+                student.put()
+                self.redirect('/')
+            else:
+                template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
+                self.response.write(template.render({'user': student}))
+        else:
+            template = JINJA_ENVIRONMENT.get_template('templates/StudentAccountSettingsPage.html')
+            self.response.write(template.render({'user': student, 'password_match': False}))
 
 
 class AdminAccountSettings(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
-        self.response.write(template.render())
+        username = self.session['username']
+        logging.info(username)
+        profs = Professor.query(Professor.user_name == username).fetch()
+        prof = profs[0]
+        if prof:
+            logging.info(prof)
+            template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
+            self.response.write(template.render({'user': prof}))
+        else:
+            self.response.write("Invalid Credentials")
+            self.redirect('/')
+
+    def post(self):
+        username = self.session['username']
+        logging.info(username)
+        prof = Professor.query(Professor.user_name == username).fetch()[0]
+        if self.request.get('first_pass') == self.request.get('second_pass'): #check if passwords match
+            logging.info(self.request.get('first_pass'))
+            if prof.change_password(self.request.get('first_pass')): # password change successful
+                prof.put()
+                self.redirect('/')
+            else:
+                template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
+                self.response.write(template.render({'user': prof}))
+        else:
+            template = JINJA_ENVIRONMENT.get_template('templates/AdminAccountSettingsPage.html')
+            self.response.write(template.render({'user': prof, 'password_match': False}))
 
 
 class SubmitQuestion(BaseHandler):
@@ -164,7 +214,10 @@ class SubmitQuestion(BaseHandler):
             students = Student.query(Student.user_name == username).fetch()
             if students:
                 template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
-                self.response.write(template.render())
+                self.response.write(template.render({
+                    'submitagain': False,
+                    'emptyfield': False
+                }))
             else:
                 self.response.write("Invalid Credentials")
                 self.redirect('/')
@@ -173,19 +226,22 @@ class SubmitQuestion(BaseHandler):
             self.redirect('/')
 
     def post(self):
-        question = self.request.get("questionInput")
-        logging.info(question)
-        username = self.session['username']
-        user = User.query(User.user_name == username).fetch()
-        user_key = user[0].key
-        Question(parent=user_key, question=question, username=username, isFAQ=False).put()
-        html = """
-            <h3>Question Submitted!</h3>
-            <form action="/" method="GET">
-                <input id="homeButton" type='submit' value='Home'/></div>
-            </form>
-        """
-        self.response.write(html)
+        question = self.request.get('questionInput')
+        if len(question) > 0:
+            logging.info(question)
+            username = self.session['username']
+            user = User.query(User.user_name == username).fetch()
+            user_key = user[0].key
+            Question(parent=user_key, question=question, username=username, isFAQ=False).put()
+            template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
+            self.response.write(template.render({
+                'submitagain': True}))
+        else:
+            template = JINJA_ENVIRONMENT.get_template('templates/submitquestion.html')
+            self.response.write(template.render({
+                'emptyfield': True,
+                'nosubmit': True
+            }))
 
 
 class SubmitFAQ(BaseHandler):  # what is this even for?
@@ -247,7 +303,7 @@ class FAQ(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
             template = JINJA_ENVIRONMENT.get_template('templates/FAQ.html')
-            questions = Question.query().fetch()
+            questions = Question.query(Question.isFAQ == True).order(-Question.date_created).fetch()
             self.response.write(template.render({
                 'questions': questions
             }))

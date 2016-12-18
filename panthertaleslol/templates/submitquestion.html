@@ -27,25 +27,34 @@
 	<div class="header">
 		<h2>Ask a New Question!</h2>
 	</div>
-	<div class="submit question">
+	{% if submitagain == True %}
+	<div class="submitquestion">
+		<h3>Question Submitted!</h3>
+		<form action="/submitquestion" method="GET">
+			<input class="stdbutton" type='submit' value='Ask Another?' style="display: inline;"/>
+		</form>
+		<form action="/" method="GET">
+			<input class="stdbutton" type='submit' value='Return Home' style="display: inline;"/>
+		</form>
+	</div>
+	{% else %}
+	<div class="settings" style="margin-left: 40px;">
 		<form action="/submitquestion" method="POST">
-			<div class="submittext">
-				<div class="container">
-						<textarea rows="5" cols="50" name="questionInput"></textarea>
-				</div>
+			<div class="submitquestion">
+				<textarea id="areastyle" name="questionInput" autofocus="autofocus"></textarea>
 			</div>
-			<div class="submitbutton">
-				<div class="container">
-					<input type="submit" value="submit">
-				</div>
+			<div class="submitquestion">
+				<input class="stdbutton" type="submit" value="Submit Question">
 			</div>
 		</form>
 	</div>
+	{% endif %}
+	{% if emptyfield == True %}
+	<h4><div id="loginheader" style="color: red;">ERROR: Field can not be empty!</div></h4>
+	{% endif %}
 		<div class="footer">
-			<div class="container">
-				<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
-				<h6 id="group">Group Team 804</h6>
-			</div>
+			<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>
+			<h6 id="group">Group Team 804</h6>
 		</div>
 	</body>
 </html>
