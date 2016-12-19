@@ -460,38 +460,38 @@ class RegisterStudents(BaseHandler):
         self.response.write("Users Registered")
         self.redirect('/')
 
-    def parse_info(self, input_list):
-        input_list = input_list.replace(' ','')
+def parse_info(self, input_list):
+    input_list = input_list.replace(' ','')
 
-        while len(input_list) > 5:
+    while len(input_list) > 5:
 
-            pos = input_list.find(',')
-            l_name = input_list[0:pos]
-            input_list = input_list[pos+1:len(input_list)]
-            logging.info(l_name)
+        pos = input_list.find(',')
+        l_name = input_list[0:pos]
+        input_list = input_list[pos+1:len(input_list)]
+        logging.info(l_name)
 
-            pos = input_list.find(',')
-            f_name = input_list[0:pos]
-            input_list = input_list[pos+1:len(input_list)]
-            logging.info(f_name)
+        pos = input_list.find(',')
+        f_name = input_list[0:pos]
+        input_list = input_list[pos+1:len(input_list)]
+        logging.info(f_name)
 
-            pos = input_list.find(',')
-            u_name = input_list[0:pos]
-            input_list = input_list[pos+1:len(input_list)]
-            logging.info(u_name)
+        pos = input_list.find(',')
+        u_name = input_list[0:pos]
+        input_list = input_list[pos+1:len(input_list)]
+        logging.info(u_name)
 
-            pos = input_list.find('\n')
-            if pos < 0:
-                pos = len(input_list)
-            type = input_list[0:pos]
-            input_list = input_list[pos+1:len(input_list)]
-            logging.info(type)
+        pos = input_list.find('\n')
+        if pos < 0:
+            pos = len(input_list)
+        type = input_list[0:pos]
+        input_list = input_list[pos+1:len(input_list)]
+        logging.info(type)
 
-            # add user
-            if type == "Instructor":
-                Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="123").put()
-            else:
-                Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
+        # add user
+        if type == "Instructor":
+            Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="123").put()
+        else:
+            Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
 
 
 class FirstLogin(BaseHandler):
