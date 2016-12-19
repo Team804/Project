@@ -19,23 +19,18 @@
 			</ul>
 		</div>	
 		<div class="submittext">
-			<div class="container">
-				<p>
-                    Question:
-                    <br>
-					<textarea name='question' rows="5" cols="50">
-					</textarea>
-                    <br>
-                    Answer:
-                    <br>
-                    <textarea name='answer' rows="5" cols="50">
-					</textarea>
-				</p>
-			</div>
-		</div>
-		<div class="submitbutton">
-			<form action="/submitfaq" method="POST">
-				<input type='submit' value='Submit FAQ'>
+			<form action='/submitfaq' method = 'POST'>
+				Question:
+				<br>
+				<textarea name='question' rows="10" cols="50">
+				</textarea>
+				<br>
+				Answer:
+				<br>
+				<textarea name='answer' rows="10" cols="50">
+				</textarea>
+				<br/>
+				<input class="stdbutton" type='submit' value='Submit FAQ'>
 			</form>
 		</div>
 		<div class="footer">

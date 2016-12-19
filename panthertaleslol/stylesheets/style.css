@@ -3,7 +3,7 @@ html, body {
 	padding: 0;
 	width: 100%;
 	font-family: Helvetica, Arial, sans-serif;
-	min-width: 800px;
+	min-width: 500px;
 }
 
 #loginbody{
@@ -312,6 +312,8 @@ html, body {
 		
 .navlink:hover, .current {
 	background-color: #FFBD00;
+	-webkit-transition: background .5s;
+	transition: background .5s;
 	overflow: 16px;
 	cursor: hand;
 	cursor: pointer;
@@ -431,9 +433,6 @@ form{
 }
 
 .footer {
-	
-
-
 	margin: 0;
 	margin-top: 175px;
 	padding-top: 10px;
@@ -450,4 +449,14 @@ form{
 
 	float: right;
 	margin-right: 10px;
+}
+@media (max-width: 900px) {
+	
+
+	.logintext{
+		
+		left: 100px;
+		margin: 0 auto;
+
+	}
 }
