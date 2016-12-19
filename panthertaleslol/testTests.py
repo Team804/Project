@@ -59,35 +59,42 @@ class TestSessions(unittest.TestCase):
 class TestUser(unittest.TestCase):
     def setUp(self):
         self.user = User(first_name="first", last_name="last", user_name="user", password="123")
+        self.user.put()
 
     def tearDown(self):
-        # user_key = list(User.query(User.user_name == self.user.user_name))
-        # for user in user_key:
-        #     user.key.delete()
-        pass
+        user_keys = list(User.query(User.user_name == self.user.user_name))
+        for user in user_keys:
+            user.key.delete()
 
     def test_user_not_null(self):
-        self.assertNotEqual(None, self.user)
+        self.assertIsNotNone(self.user)
 
     def test_empty_first_name(self):
-        self.assertRaises(first_name="", last_name="last", user_name="user", password="123")
+        user = User(first_name="", last_name="last", user_name="user", password="123")
+        self.assertIsNotNone(user)
 
     def test_empty_last_name(self):
-        self.assertRaises(User(first_name="first", last_name="", user_name="user", password="123")
+        user = User(first_name="first", last_name="", user_name="user", password="123")
+        self.assertIsNotNone(user)
 
     def test_empty_password(self):
         self.assertRaises(User(first_name="first", last_name="last", user_name="user", password=""))
 
     def test_set_username(self):
         self.user.username = 'Kyle'
-        self.assertEqual(self.user.username, 'Kyle')
+        self.assertIsNotNone(self.user)
+        self.user.put()
+        user = list(User.query(User.user_name == "Kyle"))[0]
+        self.assertIsNotNone(user)
 
     def test_set_password(self):
         self.user.password = 'kylesuckslol'
-        self.assertEqual(self.user.password, 'kylesuckslol')
+        self.user.put()
+        user = list(User.query(User.password == 'kylesuckslol'))[0]
+        self.assertIsNot(user)
 
     def test_unique_user_names(self):
-        self.assertFalse(User(first_name="first", last_name="last", user_name="user", password=""))
+        self.assertRaises(User(first_name="first", last_name="last", user_name="user", password=""))
 
     def test_change_password(self):
         self.user.change_password("234")
@@ -109,9 +116,7 @@ class TestUser(unittest.TestCase):
 
 class TestQuestion(unittest.TestCase):
     def setUp(self):
-        # put some stuff in database to tie question objects to
-        self.student = Student(user_name='student', password='password')
-        self.prof = Professor(user_name='professor', password='password')
+        pass
 
     def tearDown(self):
         # self.student_key.delete()
@@ -160,7 +165,7 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(self.faq3.isFAQ)
         self.assertFalse(self.notfaq.isFAQ)
 
-    def test_check_linked_list_functionality(self):
+    def test_autoset_time(self):
         pass
 
     def test_check_date(self):
@@ -288,41 +293,41 @@ class TestStudent(unittest.TestCase):
         self.assertFalse(self.student.change_password("badpass"))
         self.assertTrue(self.student.password, "123")
 
-    class TestRegisterUsers(unittest.TestCase):
-        def setUp(self):
-            self.user = User()
+class TestRegisterUsers(unittest.TestCase):
+    def setUp(self):
+        self.user = User()
 
-        def tearDown(self):
-            self.user.delete()
+    def tearDown(self):
+        self.user.delete()
 
-        def test_null_file(self):
-            main.parse_info(input_list="")
-            users = User.query.fetch()
-            self.assertIsNone(users)
+    def test_null_file(self):
+        main.parse_info(input_list="")
+        users = User.query.fetch()
+        self.assertIsNone(users)
 
-        def test_professor(self):
-            self.user = Professor(first_name="Jayson", last_name="Rock", user_name="ROCK32", password="password")
-            self.assertEqual(self.user.first_name, "Jayson")
-            self.assertEqual(self.user.last_name, "Rock")
-            self.assertEqual(self.user.user_name, "ROCK32")
-            self.assertEqual(self.user.password, "password")
-            self.assertIsInstance(self.user, Professor)
-            self.assertIsInstance(self.user, User)
+    def test_professor(self):
+        self.user = Professor(first_name="Jayson", last_name="Rock", user_name="ROCK32", password="password")
+        self.assertEqual(self.user.first_name, "Jayson")
+        self.assertEqual(self.user.last_name, "Rock")
+        self.assertEqual(self.user.user_name, "ROCK32")
+        self.assertEqual(self.user.password, "password")
+        self.assertIsInstance(self.user, Professor)
+        self.assertIsInstance(self.user, User)
 
-        def test_student(self):
-            self.user = Student(first_name="Alex", last_name="Weber", user_name="WEBER68", password="")
-            self.user.password = self.user.key()
-            self.assertEqual(self.user.first_name, "Alex")
-            self.assertEqual(self.user.last_name, "Weber")
-            self.assertEqual(self.user.user_name, "WEBER68")
-            self.assertEqual(self.user.password, "password")
-            self.assertIsInstance(self.user, Student)
-            self.assertIsInstance(self.user, User)
+    def test_student(self):
+        self.user = Student(first_name="Alex", last_name="Weber", user_name="WEBER68", password="")
+        self.user.password = self.user.key()
+        self.assertEqual(self.user.first_name, "Alex")
+        self.assertEqual(self.user.last_name, "Weber")
+        self.assertEqual(self.user.user_name, "WEBER68")
+        self.assertEqual(self.user.password, "password")
+        self.assertIsInstance(self.user, Student)
+        self.assertIsInstance(self.user, User)
 
-        def test_no_input(self):
-            main.parse_info(input_list="")
-            users = User.query.fetch()
-            self.assertIsNone(users)
+    def test_no_input(self):
+        main.parse_info(input_list="")
+        users = User.query.fetch()
+        self.assertIsNone(users)
 
     def test_create_one_user(self):
         main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student")
@@ -334,35 +339,34 @@ class TestStudent(unittest.TestCase):
         self.assertEqual(users[0].user_name, "VANDA24")
         self.assertEqual(users[0].password, "password")
 
+    def test_create_two_users(self):
+        main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\njen, fox, FOX36, Student")
+        users = User.query.fetch()
+        self.assertIsNotNone(users)
+        self.assertEqual(len(users), 2)
+        self.assertEqual(users[0].first_name, "kyle")
+        self.assertEqual(users[0].last_name, "vandaalwyk")
+        self.assertEqual(users[0].user_name, "VANDA24")
+        self.assertEqual(users[0].password, "password")
+        self.assertEqual(users[1].first_name, "jen")
+        self.assertEqual(users[1].last_name, "fox")
+        self.assertEqual(users[1].user_name, "FOX36")
+        self.assertEqual(users[1].password, users[1].key())
 
-def test_create_two_users(self):
-    main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\njen, fox, FOX36, Student")
-    users = User.query.fetch()
-    self.assertIsNotNone(users)
-    self.assertEqual(len(users), 2)
-    self.assertEqual(users[0].first_name, "kyle")
-    self.assertEqual(users[0].last_name, "vandaalwyk")
-    self.assertEqual(users[0].user_name, "VANDA24")
-    self.assertEqual(users[0].password, "password")
-    self.assertEqual(users[1].first_name, "jen")
-    self.assertEqual(users[1].last_name, "fox")
-    self.assertEqual(users[1].user_name, "FOX36")
-    self.assertEqual(users[1].password, users[1].key())
 
-
-def test_create_same_name_users(self):
-    main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\nkyle, vandaalwyk, FOX36, Student")
-    users = User.query.fetch()
-    self.assertIsNotNone(users)
-    self.assertEqual(len(users), 2)
-    self.assertEqual(users[0].first_name, "kyle")
-    self.assertEqual(users[0].last_name, "vandaalwyk")
-    self.assertEqual(users[0].user_name, "VANDA24")
-    self.assertEqual(users[0].password, "password")
-    self.assertEqual(users[1].first_name, "kyle")
-    self.assertEqual(users[1].last_name, "vandaalwyk")
-    self.assertEqual(users[1].user_name, "FOX36")
-    self.assertEqual(users[1].password, "password2")
+    def test_create_same_name_users(self):
+        main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\nkyle, vandaalwyk, FOX36, Student")
+        users = User.query.fetch()
+        self.assertIsNotNone(users)
+        self.assertEqual(len(users), 2)
+        self.assertEqual(users[0].first_name, "kyle")
+        self.assertEqual(users[0].last_name, "vandaalwyk")
+        self.assertEqual(users[0].user_name, "VANDA24")
+        self.assertEqual(users[0].password, "password")
+        self.assertEqual(users[1].first_name, "kyle")
+        self.assertEqual(users[1].last_name, "vandaalwyk")
+        self.assertEqual(users[1].user_name, "FOX36")
+        self.assertEqual(users[1].password, "password2")
 
 
 # Class to test all the tests
