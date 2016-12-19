@@ -116,8 +116,8 @@ class TestUser(unittest.TestCase):
 class TestQuestion(unittest.TestCase):
     def setUp(self):
         # put some stuff in database to tie question objects to
-        student_key = Student(user_name='student', password='password')
-        prof_key = Professor(user_name='professor', password='password')
+        self.student = Student(user_name='student', password='password')
+        self.prof = Professor(user_name='professor', password='password')
 
     def tearDown(self):
         # self.student_key.delete()
@@ -175,58 +175,6 @@ class TestQuestion(unittest.TestCase):
     def test_empty_question(self):
         pass
 
-    def test_user_not_null(self):
-        self.assertNotEqual(None, self.student)
-
-    def test_empty_first_name(self):
-        student = Student(first_name="", last_name="last", user_name="user", password="123")
-        self.assertIsNotNone(student)
-        student.key.delete()
-
-    def test_empty_last_name(self):
-        student = Student(first_name="first", last_name="", user_name="user", password="123")
-        self.assertIsNotNone(student)
-        student.key.delete()
-
-    def test_empty_password(self):
-        self.assertRaises(Student(first_name="first", last_name="last", user_name="user", password=""))
-
-    def test_empty_username(self):
-        self.assertRaises(Student(first_name="first", last_name="last", user_name="", password="123"))
-
-    def test_set_username(self):
-        self.student.username = 'Kyle'
-        self.assertEqual(self.student.username, 'Kyle')
-
-    def test_set_password(self):
-        self.student.password = 'kylesuckslol'
-        self.assertEqual(self.student.password, 'kylesuckslol')
-
-    def test_unique_user_names(self):
-        student2 = Student(first_name="first", last_name="last", user_name="user", password="")
-        self.assertIsNone(student2)
-        student2.key.delete()
-
-    def test_change_password(self):
-        self.student.change_password("234")
-        self.assertTrue(self.student.password, "234")
-
-    def test_change_blank_password(self):
-        self.assertFalse(self.student.change_password(""))
-        self.assertTrue(self.student.password, "123")
-
-    def test_change_blank_password(self):
-        self.assertFalse(self.student.change_password(""))
-        self.assertTrue(self.student.password, "123")
-
-    def test_change_short_password(self):
-        self.assertFalse(self.student.change_password("23"))
-        self.assertTrue(self.student.password, "123")
-
-    def test_change_no_numbers_password(self):
-        self.assertFalse(self.student.change_password("badpass"))
-        self.assertTrue(self.student.password, "123")
-
     # to be implements next sprint?
     def test_get_questions(self):
         self.assertIsNotNone(self.student.get_all_questions())
@@ -269,17 +217,13 @@ class TestProfessor(unittest.TestCase):
         self.assertEqual(self.professor.password, 'kylesuckslol')
 
     def test_unique_user_names(self):
-        professor2 = Professor(first_name="first", last_name="last", user_name="professor", password="")
-        self.assertIsNone(professor2)
-        professor2.key.delete()
+        professor1 = Professor(first_name="first", last_name="last", user_name="professor", password="").put()
+        self.assertRaises(Professor(first_name="first", last_name="last", user_name="professor", password="").put())
+        professor1.key.delete()
 
     def test_change_password(self):
         self.professor.change_password("234")
         self.assertTrue(self.professor.password, "234")
-
-    def test_change_blank_password(self):
-        self.assertFalse(self.professor.change_password(""))
-        self.assertTrue(self.professor.password, "123")
 
     def test_change_blank_password(self):
         self.assertFalse(self.professor.change_password(""))
@@ -313,19 +257,13 @@ class TestStudent(unittest.TestCase):
         self.assertNotEqual(None, self.student)
 
     def test_empty_first_name(self):
-        student = Student(first_name="", last_name="last", user_name="user", password="123")
-        self.assertIsNotNone(student)
-        student.key.delete()
+        self.failUnlessRaises(Student(first_name="", last_name="last", user_name="user", password="123"))
 
     def test_empty_last_name(self):
-        student = Student(first_name="first", last_name="", user_name="user", password="123")
-        self.assertIsNotNone(student)
-        student.key.delete()
+        self.failUnlessRaises(first_name="first", last_name="", user_name="user", password="123")
 
     def test_empty_password(self):
-        student = Student(first_name="first", last_name="last", user_name="user", password="")
-        self.assertIsNone(student)
-        student.key.delete()
+        self.failUnlessRaises(first_name="first", last_name="last", user_name="user", password="")
 
     def test_set_username(self):
         self.student.username = 'Kyle'
@@ -348,10 +286,6 @@ class TestStudent(unittest.TestCase):
         self.assertFalse(self.student.change_password(""))
         self.assertTrue(self.student.password, "123")
 
-    def test_change_blank_password(self):
-        self.assertFalse(self.student.change_password(""))
-        self.assertTrue(self.student.password, "123")
-
     def test_change_short_password(self):
         self.assertFalse(self.student.change_password("23"))
         self.assertTrue(self.student.password, "123")
@@ -368,7 +302,7 @@ class TestStudent(unittest.TestCase):
             self.user.delete()
 
         def test_null_file(self):
-            main.parse_info(self, input_list="")
+            main.parse_info(input_list="")
             users = User.query.fetch()
             self.assertIsNone(users)
 
@@ -392,12 +326,12 @@ class TestStudent(unittest.TestCase):
             self.assertIsInstance(self.user, User)
 
         def test_no_input(self):
-            main.parse_info(self, input_list="")
+            main.parse_info(input_list="")
             users = User.query.fetch()
             self.assertIsNone(users)
 
     def test_create_one_user(self):
-        main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student")
+        main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student")
         users = User.query.fetch()
         self.assertIsNotNone(users)
         self.assertEqual(len(users), 1)
@@ -408,7 +342,7 @@ class TestStudent(unittest.TestCase):
 
 
 def test_create_two_users(self):
-    main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student\njen, fox, FOX36, Student")
+    main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\njen, fox, FOX36, Student")
     users = User.query.fetch()
     self.assertIsNotNone(users)
     self.assertEqual(len(users), 2)
@@ -423,7 +357,7 @@ def test_create_two_users(self):
 
 
 def test_create_same_name_users(self):
-    main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student\nkyle, vandaalwyk, FOX36, Student")
+    main.parse_info(input_list="kyle, vandaalwyk, VANDA24, Student\nkyle, vandaalwyk, FOX36, Student")
     users = User.query.fetch()
     self.assertIsNotNone(users)
     self.assertEqual(len(users), 2)
