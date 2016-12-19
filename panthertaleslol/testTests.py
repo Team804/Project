@@ -7,6 +7,7 @@ from user import User
 from user import Professor
 from user import Student
 from question import Question
+import main
 
 # class to test properties to be read from later in jinja template
 class TestObj():
@@ -110,15 +111,7 @@ class TestUser(unittest.TestCase):
         self.assertFalse(self.user.change_password("badpass"))
         self.assertTrue(self.user.password, "123")
 
-class TestStudent(unittest.TestCase):
-    def setUp(self):
-        self.student = Student(first_name="first", last_name="last", user_name="user", password="123")
 
-    def tearDown(self):
-        # student_key = list(Student.query(Student.user_name == self.student.user_name))
-        # for user in student_key:
-        #     user.key.delete()
-        pass
 
 class TestQuestion(unittest.TestCase):
     def setUp(self):
@@ -307,6 +300,142 @@ class TestProfessor(unittest.TestCase):
         Question(isFAQ=False, question="question")
         self.assertIsNotNone(self.professor.load_queue())
 
+class TestStudent(unittest.TestCase):
+    def setUp(self):
+        self.student = Student(first_name="first", last_name="last", user_name="user", password="123")
+
+    def tearDown(self):
+        student = Student.query(Student.first_name == self.student.first_name).fetch()
+        if student:
+            student.key.delete()
+
+    def test_user_not_null(self):
+        self.assertNotEqual(None, self.student)
+
+    def test_empty_first_name(self):
+        student = Student(first_name="", last_name="last", user_name="user", password="123")
+        self.assertIsNotNone(student)
+        student.key.delete()
+
+    def test_empty_last_name(self):
+        student = Student(first_name="first", last_name="", user_name="user", password="123")
+        self.assertIsNotNone(student)
+        student.key.delete()
+
+    def test_empty_password(self):
+        student = Student(first_name="first", last_name="last", user_name="user", password="")
+        self.assertIsNone(student)
+        student.key.delete()
+
+    def test_set_username(self):
+        self.student.username = 'Kyle'
+        self.assertEqual(self.student.username, 'Kyle')
+
+    def test_set_password(self):
+        self.student.password = 'kylesuckslol'
+        self.assertEqual(self.student.password, 'kylesuckslol')
+
+    def test_unique_user_names(self):
+        student2 = Student(first_name="first", last_name="last", user_name="user", password="")
+        self.assertIsNone(student2)
+        student2.key.delete()
+
+    def test_change_password(self):
+        self.student.change_password("234")
+        self.assertTrue(self.student.password, "234")
+
+    def test_change_blank_password(self):
+        self.assertFalse(self.student.change_password(""))
+        self.assertTrue(self.student.password, "123")
+
+    def test_change_blank_password(self):
+        self.assertFalse(self.student.change_password(""))
+        self.assertTrue(self.student.password, "123")
+
+    def test_change_short_password(self):
+        self.assertFalse(self.student.change_password("23"))
+        self.assertTrue(self.student.password, "123")
+
+    def test_change_no_numbers_password(self):
+        self.assertFalse(self.student.change_password("badpass"))
+        self.assertTrue(self.student.password, "123")
+
+    class TestRegisterUsers(unittest.TestCase):
+        def setUp(self):
+            self.user = User()
+
+        def tearDown(self):
+            self.user.delete()
+
+        def test_null_file(self):
+            main.parse_info(self, input_list="")
+            users = User.query.fetch()
+            self.assertIsNone(users)
+
+        def test_professor(self):
+            self.user = Professor(first_name="Jayson", last_name="Rock", user_name="ROCK32", password="password")
+            self.assertEqual(self.user.first_name, "Jayson")
+            self.assertEqual(self.user.last_name, "Rock")
+            self.assertEqual(self.user.user_name, "ROCK32")
+            self.assertEqual(self.user.password, "password")
+            self.assertIsInstance(self.user, Professor)
+            self.assertIsInstance(self.user, User)
+
+        def test_student(self):
+            self.user = Student(first_name="Alex", last_name="Weber", user_name="WEBER68", password="")
+            self.user.password = self.user.key()
+            self.assertEqual(self.user.first_name, "Alex")
+            self.assertEqual(self.user.last_name, "Weber")
+            self.assertEqual(self.user.user_name, "WEBER68")
+            self.assertEqual(self.user.password, "password")
+            self.assertIsInstance(self.user, Student)
+            self.assertIsInstance(self.user, User)
+
+        def test_no_input(self):
+            main.parse_info(self, input_list="")
+            users = User.query.fetch()
+            self.assertIsNone(users)
+
+    def test_create_one_user(self):
+        main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student")
+        users = User.query.fetch()
+        self.assertIsNotNone(users)
+        self.assertEqual(len(users), 1)
+        self.assertEqual(users[0].first_name, "kyle")
+        self.assertEqual(users[0].last_name, "vandaalwyk")
+        self.assertEqual(users[0].user_name, "VANDA24")
+        self.assertEqual(users[0].password, "password")
+
+
+def test_create_two_users(self):
+    main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student\njen, fox, FOX36, Student")
+    users = User.query.fetch()
+    self.assertIsNotNone(users)
+    self.assertEqual(len(users), 2)
+    self.assertEqual(users[0].first_name, "kyle")
+    self.assertEqual(users[0].last_name, "vandaalwyk")
+    self.assertEqual(users[0].user_name, "VANDA24")
+    self.assertEqual(users[0].password, "password")
+    self.assertEqual(users[1].first_name, "jen")
+    self.assertEqual(users[1].last_name, "fox")
+    self.assertEqual(users[1].user_name, "FOX36")
+    self.assertEqual(users[1].password, users[1].key())
+
+
+def test_create_same_name_users(self):
+    main.parse_info(self, input_list="kyle, vandaalwyk, VANDA24, Student\nkyle, vandaalwyk, FOX36, Student")
+    users = User.query.fetch()
+    self.assertIsNotNone(users)
+    self.assertEqual(len(users), 2)
+    self.assertEqual(users[0].first_name, "kyle")
+    self.assertEqual(users[0].last_name, "vandaalwyk")
+    self.assertEqual(users[0].user_name, "VANDA24")
+    self.assertEqual(users[0].password, "password")
+    self.assertEqual(users[1].first_name, "kyle")
+    self.assertEqual(users[1].last_name, "vandaalwyk")
+    self.assertEqual(users[1].user_name, "FOX36")
+    self.assertEqual(users[1].password, "password2")
+
 
 # Class to test all the tests
 class TestTests():
@@ -315,7 +444,7 @@ class TestTests():
     list_results = []
     list_results_all = []
 
-    test_classes_to_run = [TestSessions, TestUser, TestQuestion, TestStudent, TestProfessor]
+    test_classes_to_run = [TestSessions, TestUser, TestQuestion, TestProfessor, TestStudent]
 
 
     def run_all_tests(self):
