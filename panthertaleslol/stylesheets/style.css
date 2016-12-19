@@ -3,7 +3,7 @@ html, body {
 	padding: 0;
 	width: 100%;
 	font-family: Helvetica, Arial, sans-serif;
-	min-width: 800px;
+	min-width: 500px;
 }
 
 #loginbody{
@@ -340,4 +340,14 @@ form{
 
 	float: right;
 	margin-right: 10px;
+}
+@media (max-width: 900px) {
+	
+
+	.logintext{
+		
+		left: 100px;
+		margin: 0 auto;
+
+	}
 }
