@@ -355,7 +355,15 @@ class QuestionQueue(BaseHandler):
         self.redirect('/questionqueue')
 
 
+class FAQPublic(BaseHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/FAQPublic.html')
+        questions = Question.query(Question.isFAQ == True).order(-Question.date_created).fetch()
+        self.response.write(template.render({
+            'questions': questions
+        }))
 
+		
 class FAQ(BaseHandler):
     def get(self):
         if 'username' in self.session and self.session['username']:
@@ -559,6 +567,7 @@ app = webapp2.WSGIApplication([
     ('/adminaccountsettings', AdminAccountSettings),
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
+	('/FAQPublic', FAQ),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQADMIN/D/.*', FAQDelete),
