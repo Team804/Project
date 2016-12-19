@@ -35,6 +35,36 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 		<div class = "faq">
 				{% for q in questions %}
                    <li class="questionblock" style="margin-left: 40px;"><p class="timestamp">Asked on {{ q.date_created }} By: {{q.username}}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }} by {{q.answeredBy}}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
+                    {% if q.isFAQ %}
+                    <li>
+                        {{ q.question }}
+							{% if questionBeingEdited and q.question == questionBeingEdited.question %}
+								<form action="/FAQADMIN/E/{{q.get_url_safe_key()}}" method="POST">
+									<input type='submit' value='Save'>
+								</form>
+							{% endif %}
+                        <ul>
+                            {{ q.answer }}
+                        </ul>
+                        <form action="/FAQADMIN/E/{{q.get_url_safe_key()}}" method="GET">
+                        	<input type='submit' value='Edit'>
+						</form>
+                        {# TODO: #}
+                        {# if Edit #}
+                            {# Create new faq submission form #}
+                            {# update q with new input #}
+                        {# endif #}
+						<form action="/FAQADMIN/D/{{q.get_url_safe_key()}}" method="GET">
+                        	<input type='submit' value='Delete'>
+						</form>
+                        {# TODO: #}
+                        {# if Delete #}
+                            {# q.delete() or q.key.delete() #}
+                            {# self.redirect('/FAQADMIN') #}
+                        {# endif #}
+                    </li>
+                    <br>
+                    {% endif %}
                 {% endfor %}
 		</div>
 	</body>

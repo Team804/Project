@@ -381,7 +381,6 @@ class FAQADMIN(BaseHandler):
             """
             self.response.write(html)
 
-
     def post(self):
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
         self.request.get("q")
@@ -393,10 +392,24 @@ class FAQDelete(BaseHandler):
         #get the url path
         url_key = self.request.path
         question_key = url_key.replace("/FAQADMIN/D/", "")
-        question_key = Question().get_email_from_url_safe_key(question_key)
+        question_key = Question().get_question_from_url_safe_key(question_key)
         logging.info(question_key)
         question_key.key.delete()
         self.redirect('/FAQADMIN')
+
+class FAQEdit(BaseHandler):
+    def get(self):
+        url_key = self.request.path
+        question_key = url_key.replace("/FAQADMIN/E/", "")
+        question = Question().get_question_from_url_safe_key(question_key)
+
+        template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+        questions = Question.query().fetch()
+
+        self.response.write(template.render({
+            'questions': questions,
+            'questionBeingEdited': question
+        }))
 
 
 class LogoutHandler(BaseHandler):
@@ -527,6 +540,7 @@ app = webapp2.WSGIApplication([
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQADMIN/D/.*', FAQDelete),
+    ('/FAQADMIN/E/.*', FAQEdit),
     ('/registerStudents', RegisterStudents),
     ('/logout', LogoutHandler),
     ('/testpage', TestPage),
