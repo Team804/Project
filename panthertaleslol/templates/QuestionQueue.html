@@ -63,7 +63,7 @@
 														<div>
 															<form action="/questionqueue" method="POST">
 																<textarea id="areastyle" name="answerin" autofocus="autofocus"></textarea>
-																<button class="stdbutton" name="Answer" style="margin-right: 8px;" value="{{q.get_url_safe_key}}" type="submit">Submit</button>
+																<button class="stdbutton" name="Answer" style="margin-right: 8px;" value="{{q.get_url_safe_key()}}" type="submit">Submit</button>
 															</form>
 														</div>
 													</li>
@@ -73,7 +73,7 @@
 																<div>
 																	<form action="/questionqueue" method="POST">
 																		<h4>Add This Question to FAQs?</h4> 
-																			<button class="stdbutton" name="MakeFAQ" style="margin-right: 8px; margin-left: 8px;" value="{{q.get_url_safe_key}}" type="submit">Confirm</button>
+																			<button class="stdbutton" name="MakeFAQ" style="margin-right: 8px; margin-left: 8px;" value="{{q.get_url_safe_key()}}" type="submit">Confirm</button>
 																	</form>
 																</div>
 													</li>
@@ -83,7 +83,7 @@
 														<div>
 															<form action="/questionqueue" method="POST">  
 																<h4>Delete This Question From FAQs?</h4> 
-																<button class="stdbutton" style="margin-left:8px;" name="Delete" value="{{q.get_url_safe_key}}" type="submit">Confirm</button>
+																<button class="stdbutton" style="margin-left:8px;" name="Delete" value="{{q.get_url_safe_key()}}" type="submit">Confirm</button>
 															</form>
 														</div>
 													</li>
