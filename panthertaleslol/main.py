@@ -28,6 +28,7 @@ from testTests import TestTests
 from webapp2_extras import sessions
 
 
+
 JINJA_ENVIRONMENT = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
@@ -337,21 +338,21 @@ class QuestionQueue(BaseHandler):
     def post(self):
         if self.request.get('Answer'):
             qurl=self.request.get('Answer')
-            qkey = ndb.Key(urlsafe=qurl)
-            q=qkey.get()
-            q.answer=self.request.get('answerin')
-            q.put()
+            qkey = Question().get_question_from_url_safe_key(qurl)
+            qkey.answer=self.request.get('answerin')
+            qkey.unAnswered = False
+            qkey.put()
         elif self.request.get('MakeFAQ'):
             qurl=self.request.get('MakeFAQ')
-            qkey = ndb.Key(urlsafe=qurl)
-            q=qkey.get()
-            q.isFAQ = True
-            q.put()
+            qkey = Question().get_question_from_url_safe_key(qurl)
+            qkey.isFAQ = True
+            qkey.put()
         else:
             qurl=self.request.get('Delete')
-            qkey = ndb.Key(urlsafe=qurl)
-            q=qkey.get()
-            q.key.delete()
+            qkey = Question().get_question_from_url_safe_key(qurl)
+            qkey.key.delete()
+
+        self.redirect('/questionqueue')
 
 
 
