@@ -456,19 +456,21 @@ class RegisterStudents(BaseHandler):
     def post(self):
         input_list = self.request.get('inputText')
         logging.info(input_list)
-        self.parse_info(input_list)
-        self.response.write("Users Registered")
+        parse_info(input_list)
+
+        logging.info("Registered users")
         self.redirect('/')
 
-def parse_info(self, input_list):
-    input_list = input_list.replace(' ','')
 
+def parse_info(input_list):
+    input_list = input_list.replace(' ','')
+    logging.info("parse info called")
     while len(input_list) > 5:
 
         pos = input_list.find(',')
         l_name = input_list[0:pos]
         input_list = input_list[pos+1:len(input_list)]
-        logging.info(l_name)
+        logging.info("name" + l_name)
 
         pos = input_list.find(',')
         f_name = input_list[0:pos]
@@ -483,15 +485,17 @@ def parse_info(self, input_list):
         pos = input_list.find('\n')
         if pos < 0:
             pos = len(input_list)
-        type = input_list[0:pos]
+        u_type = input_list[0:pos]
         input_list = input_list[pos+1:len(input_list)]
-        logging.info(type)
+        logging.info(u_type)
 
         # add user
-        if type == "Instructor":
-            Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="123").put()
+        if u_type == "Instructor":
+            prof = Professor(first_name=f_name, last_name=l_name, user_name=u_name, password="professor").put()
+            logging.info(prof)
         else:
-            Student(first_name=f_name, last_name=l_name, user_name=u_name, password="234").put()
+            stud = Student(first_name=f_name, last_name=l_name, user_name=u_name, password="student").put()
+            logging.info(stud)
 
 
 class FirstLogin(BaseHandler):
