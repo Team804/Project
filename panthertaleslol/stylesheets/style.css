@@ -26,7 +26,7 @@ html, body {
 	border-radius: 4px;
 	resize: none;
     border: 2px solid #ccc;
-    background-color: #f8f8f8;
+    background-color: #edf7f7;
 	height: 200px;
 	width: 100%;
 }
@@ -35,6 +35,68 @@ html, body {
 	text-align: center;
 }
 
+.collapsibleList li > input + * {
+	display: none;
+ }
+
+ .collapsibleList li > input:checked + * {
+	display: block;
+}
+
+.collapsibleList li > input {
+	display: none;
+}
+
+
+
+.collapsibleList label {
+	cursor: pointer;
+	display: block;
+	white-space: pre-wrap;
+	word-break: break-all;
+	padding: 16px;
+    margin-right: 40px;
+	margin-bottom: 8px;
+    border: 3px outset;
+	background-color: #f8f8f8;
+	border-color: #333333;
+}
+ .collapsiblefields li{
+	display: inline;
+	text-align: center;
+	margin: auto;
+ }
+ 
+.collapsiblefields li > input + * {
+	display: none;
+ }
+
+ .collapsiblefields li > input:checked + * {
+	display: block;
+}
+
+.collapsiblefields li > input {
+	display: none;
+}
+
+.collapsiblefields label {
+	background-color: #333333;
+    border: none;
+    color: white;
+    padding: 16px
+    text-decoration: none;
+    font-size: 16px;
+	text-align: center;
+	margin: 16px;
+}
+
+.collapsiblefields label:hover, .current{
+	background-color: #FFBD00;
+	overflow: 16px;
+	cursor: hand;
+	cursor: pointer;
+}
+ 
 .settings{
 	border-radius: 4px;
 	display: block;
@@ -59,6 +121,24 @@ html, body {
 	margin-bottom: 16px;
 	padding: 16px;
 	text-align: center;
+}
+
+.submitanswer{
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-bottom: 16px;
+	padding: 16px;
+	text-align: center;
+}
+
+.submitanswer textarea{
+	border-radius: 4px;
+	resize: none;
+    border: 2px solid #ccc;
+    background-color: #edf7f7;
+	height: 200px;
+	width: 100%;
+	display: none;
 }
 
 .stdbutton{
@@ -89,7 +169,6 @@ html, body {
 
 .accountblock{
 	display: inline-block;
-	white-space: pre-wrap;
 	padding: 16px;
 	margin: 0 auto;
 	margin-right: 40px;
@@ -102,7 +181,6 @@ html, body {
 
 .questionblock{
 	display: block;
-	white-space: pre-wrap;
 	word-break: break-all;
 	padding: 16px;
 	padding-top: 0px;
@@ -112,12 +190,43 @@ html, body {
 	background-color: #f8f8f8;
 	border-color: #333333;
 }
-			
+
+.hiddentext label:hover, .current{
+	background-color: #FFBD00;
+	overflow: 16px;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.hiddentext li > input + * {
+	display: none;
+ }
+
+ .hiddentext li > input:checked + * {
+	display: block;
+}
+
+.hiddentext li > input {
+	display: none;
+}
+
+.hiddentext label {
+	cursor: pointer;
+	display: block;
+	white-space: pre-wrap;
+	word-break: break-all;
+	padding: 16px;
+    margin-right: 40px;
+	margin-bottom: 8px;
+    border: 3px outset;
+	background-color: #f8f8f8;
+	border-color: #333333;
+}
+
 .timestamp{
 	font-size: 12;
 	font-weight: bold;
-	padding: 0;
-	margin: auto;
+	white-space: none;
 }
 			
 .QQDIV{

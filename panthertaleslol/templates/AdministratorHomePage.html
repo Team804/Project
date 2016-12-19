@@ -32,31 +32,22 @@
 		<h2>Hello, {{username}}  </h2>
 	</div>
 
-	<div class="sectiontitle">
-			<h2>Pending Questions</h2>
-			<ul>
-                <form action="/adminhome" method="POST">
-				{% for q in questions %}
-                    {% if not q.answer %}
-                        <h1 id={{q.question}} style="display:none;" > </h1>
-                        <li><a href="/answerquestion"> {{q.question}}   </a></li>
-
-                            <textarea id="txtInput" placeholder="stop breaking por favor"> </textarea>
-                            <script>
-                                $(#txtInput).autoGrow();
-                            </script>
-                            <br/>
-                            <input type='submit' value='Submit Answer'>
-
-                        </form>
-                        <ul>
-                            {# TODO: Display user and date created #}
-                        </ul>
-                        <br/>
-                    {% endif %}
-				{% endfor %}
-			</ul>
-	</div>
+			<div>
+				<ul class="collapsibleList">
+					{% for q in questions %}
+						<li>
+							<label for="{{ q.username }}{{q.date_created}}">Asked on: {{ q.date_created }} Preview: {{ q.question|truncate(8, True) }}...</label>
+							<input type="checkbox" id="{{ q.username }}{{q.date_created}}"/>
+								<div class="questionblock">
+										<div>
+											<p class="timestamp">Asked on {{ q.date_created }}</p>
+											<p style="word-wrap: break-word;">{{ q.question }}</p>
+										</div>
+								</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
 
   	<div class="footer">
 		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>

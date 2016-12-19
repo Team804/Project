@@ -334,23 +334,24 @@ class QuestionQueue(BaseHandler):
             self.response.write(html)
 
     def post(self):
-        unanswered_questions = Question.query(Question.unAnswered == True).fetch()
-        recent_questions = Question.query().order(-Question.date_answered).fetch(6)
-        all_questions = Question.query().fetch()
-        students = Student.query().fetch()
         if self.request.get('Answer'):
-            template = JINJA_ENVIRONMENT.get_template('templates/QuestionQueue.html')
-            self.response.write(template.render({
-                'QQTAB': qqtab,
-                'all_questions': all_questions,
-                'unanswered_questions': unanswered_questions,
-                'recent_questions': recent_questions,
-                'students': students
-            }))
+            qurl=self.request.get('Answer')
+            qkey = ndb.Key(urlsafe=qurl)
+            q=qkey.get()
+            q.answer=self.request.get('answerin')
+            q.put()
         elif self.request.get('MakeFAQ'):
-            pass
-        elif self.request.get('Delete'):
-            pass
+            qurl=self.request.get('MakeFAQ')
+            qkey = ndb.Key(urlsafe=qurl)
+            q=qkey.get()
+            q.isFAQ = True
+            q.put()
+        else:
+            qurl=self.request.get('Delete')
+            qkey = ndb.Key(urlsafe=qurl)
+            q=qkey.get()
+            q.key.delete()
+
 
 
 class FAQ(BaseHandler):

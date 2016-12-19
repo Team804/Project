@@ -30,17 +30,39 @@
 	</div>
 	<div class="mypendingqs">
 			<h3>My Pending Questions</h3>
-			<ul class="questionlist">
+			<ul class="collapsibleList">
+				<li><label for="Pending Questions">Pending Questions</label>
+					<input type="checkbox" id="Pending Questions"/>
+				<ul class="collapsibleList">
 				{% for q in unanswered_questions %}
-					<li class="questionblock"> <p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p></li>
+				<li><label for="{{ q.username }}{{q.date_created}}">Asked on: {{ q.date_created }} Preview: {{ q.question|truncate(8, True) }}...</label>
+				<input type="checkbox" id="{{ q.username }}{{q.date_created}}"/>
+					<div class="questionblock">
+						<p class="timestamp">Asked on {{ q.date_created }}</p>
+						<p style="word-wrap: break-word;">{{ q.question }}</p>
+					</div>
+				</li>
 				{% endfor %}
-			</ul>
+				</ul>
+				</li>
 	</div>
 	<div class="myansweredqs">
 			<h3>My Answered Questions</h3>
-			<ul class="questionlist">
+			<ul class="collapsibleList">
+				<li><label for="Answered Questions">Answered Questions</label>
+					<input type="checkbox" id="Answered Questions"/>
+			<ul class="collapsibleList">
 				{% for q in answered_questions %}
-					<li class="questionblock"><p class="timestamp">Asked on {{ q.date_created }}</p> <p style="word-wrap: break-word;">{{ q.question }}</p> <p class="timestamp">Answered on {{ q.date_answered }}</p> <p style="word-wrap: break-word;">>{{ q.answer }}</p></li>
+				<li><label for="{{ q.username }}{{q.date_created}}">Asked on: {{ q.date_created }} Preview: {{ q.question|truncate(8, True) }}...</label>
+					<input type="checkbox" id="{{ q.username }}{{q.date_created}}"/>
+						<div class="questionblock">
+							<p class="timestamp">Asked on {{ q.date_created }}</p>
+							<p style="word-wrap: break-word;">{{ q.question }}</p>
+							<p class="timestamp">Answered on {{ q.date_answered }}</p>
+							<p style="word-wrap: break-word;">{{ q.answer }}</p>
+						</div>
+				</li>
+			</li>
 				{% endfor %}
 			</ul>
 	</div>
