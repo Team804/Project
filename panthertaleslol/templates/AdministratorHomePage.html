@@ -29,25 +29,27 @@
 		</ul>
 	</div>	
 	<div class="header">
-		<h2>Hello, {{username}}  </h2>
+		<h2>Hello, {{username}}  <3 </h2>
 	</div>
 
-			<div>
-				<ul class="collapsibleList">
-					{% for q in questions %}
-						<li>
-							<label for="{{ q.username }}{{q.date_created}}">Asked on: {{ q.date_created }} Preview: {{ q.question|truncate(8, True) }}...</label>
-							<input type="checkbox" id="{{ q.username }}{{q.date_created}}"/>
-								<div class="questionblock">
-										<div>
-											<p class="timestamp">Asked on {{ q.date_created }}</p>
-											<p style="word-wrap: break-word;">{{ q.question }}</p>
-										</div>
+	<div class="sectiontitle">
+		<ul class="collapsibleList">
+			{% for q in questions %}
+				<li>
+					<label for="{{ q.username }}{{q.date_created}}">Asked on: {{ q.date_created }} Preview: {{ q.question|truncate(8, True) }}...</label>
+					<input type="checkbox" id="{{ q.username }}{{q.date_created}}"/>
+						<div class="questionblock">
+								<div>
+									<p class="timestamp">Asked on {{ q.date_created }}</p>
+									<p style="word-wrap: break-word;">
+										<a href="/questionqueue"> {{q.question}}   </a>
+									</p>
 								</div>
-						</li>
-					{% endfor %}
-				</ul>
-			</div>
+						</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
 
   	<div class="footer">
 		<h6 id="copyright">&copy; University of Wisconsin Milwaukee</h6>

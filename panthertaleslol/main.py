@@ -407,12 +407,25 @@ class FAQEdit(BaseHandler):
 
         template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
         questions = Question.query().fetch()
-
         self.response.write(template.render({
             'questions': questions,
             'questionBeingEdited': question
         }))
+        # self.redirect('/FAQADMIN')
+    def post(self):
+        url_key = self.request.path
+        question_key = url_key.replace("/FAQADMIN/E/", "")
+        question = Question().get_question_from_url_safe_key(question_key)
+        question.answer = self.response.get('editFAQ')
+        question.put()
 
+        template = JINJA_ENVIRONMENT.get_template('templates/FAQAdminView.html')
+        questions = Question.query().fetch()
+        self.response.write(template.render({
+            'questions': questions,
+            'questionBeingEdited': question
+        }))
+        # self.redirect('/FAQADMIN')
 
 class LogoutHandler(BaseHandler):
     def get(self):

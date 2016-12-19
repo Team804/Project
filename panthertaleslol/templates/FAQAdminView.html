@@ -48,7 +48,8 @@ I know there are ways to make the questions collapsable but I'm not not sure if 
 					{% if questionBeingEdited and q.question == questionBeingEdited.question %}
 						<form action="/FAQADMIN/E/{{q.get_url_safe_key()}}" method="POST">
 							<input class="stdbutton" type='submit' value='Save'>
-							<textarea id="editFAQ" />
+							<textarea id="editFAQ" >
+							</textarea>
 						</form>
 					{% endif %}
 					<form action="/FAQADMIN/E/{{q.get_url_safe_key()}}" method="GET" style="float: left;">
