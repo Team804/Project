@@ -20,7 +20,7 @@ class Question(ndb.Model):
 
 
     @staticmethod
-    def get_email_from_url_safe_key(urlsafe_key):
-        email_key = ndb.Key(urlsafe=urlsafe_key)
-        email = email_key.get()
-        return email
+    def get_question_from_url_safe_key(urlsafe_key):
+        question_key = ndb.Key(urlsafe=urlsafe_key)
+        question = question_key.get()
+        return question
