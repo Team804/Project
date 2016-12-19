@@ -466,23 +466,25 @@ class RegisterStudents(BaseHandler):
         while len(input_list) > 5:
 
             pos = input_list.find(',')
-            l_name = input_list[0:pos].replace(',','')
-            input_list = input_list[pos:len(input_list)]
+            l_name = input_list[0:pos]
+            input_list = input_list[pos+1:len(input_list)]
             logging.info(l_name)
 
             pos = input_list.find(',')
-            f_name = input_list[0:pos].replace(',','')
-            input_list = input_list[pos:len(input_list)]
+            f_name = input_list[0:pos]
+            input_list = input_list[pos+1:len(input_list)]
             logging.info(f_name)
 
             pos = input_list.find(',')
-            u_name = input_list[0:pos].replace(',','')
-            input_list = input_list[pos:len(input_list)]
+            u_name = input_list[0:pos]
+            input_list = input_list[pos+1:len(input_list)]
             logging.info(u_name)
 
             pos = input_list.find('\n')
-            type = input_list[0:pos].replace(',','')
-            input_list = input_list[pos:len(input_list)]
+            if pos < 0:
+                pos = len(input_list)
+            type = input_list[0:pos]
+            input_list = input_list[pos+1:len(input_list)]
             logging.info(type)
 
             # add user
