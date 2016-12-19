@@ -273,16 +273,16 @@ class SubmitFAQ(BaseHandler):  # what is this even for?
     def get(self):
         if 'username' in self.session and self.session['username']:
             html = """<form action='/submitfaq' method = 'POST'>
-            <textarea name = "inputtedQ" rows = "3" cols = "50">
-                Question area
+            <textarea name = "inputtedQ" rows = "15" cols = "50" style="placeholder="Question goes here...">
             </textarea>
-            <textarea name = "inputtedA" rows = "15" cols = "50">
-                Answer area
+            <textarea name = "inputtedA" rows = "15" cols = "50" placeholder="Answer goes here...">
             </textarea>
             <input type="submit" value="submit">
             </form>
             """
-            self.response.write(html)
+            # self.response.write(html)
+            template = JINJA_ENVIRONMENT.get_template('templates/submitfaq.html')
+            self.response.write(template.render())
         else:
             html="""<html>
             <head><meta http-equiv="refresh" content="3;URL='/'"><title>Redirect</title></head>
@@ -291,7 +291,8 @@ class SubmitFAQ(BaseHandler):  # what is this even for?
             self.response.write(html)
 
     def post(self):
-        Question(isFAQ=True, question=self.request.get('inputtedQ'), answer=self.request.get('inputtedA')).put()
+        # Question(isFAQ=True, question=self.request.get('inputtedQ'), answer=self.request.get('inputtedA')).put()
+        Question(isFAQ=True, question=self.request.get('question'), answer=self.request.get('answer')).put()
         self.redirect('/FAQADMIN')
 
 
