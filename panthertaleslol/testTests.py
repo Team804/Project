@@ -70,15 +70,13 @@ class TestUser(unittest.TestCase):
         self.assertNotEqual(None, self.user)
 
     def test_empty_first_name(self):
-        user = User(first_name="", last_name="last", user_name="user", password="123")
-        self.assertIsNotNone(user)
+        self.assertRaises(first_name="", last_name="last", user_name="user", password="123")
 
     def test_empty_last_name(self):
-        user = User(first_name="first", last_name="", user_name="user", password="123")
-        self.assertIsNotNone(user)
+        self.assertRaises(User(first_name="first", last_name="", user_name="user", password="123")
 
     def test_empty_password(self):
-        self.assertIsFalse(User(first_name="first", last_name="last", user_name="user", password=""))
+        self.assertRaises(User(first_name="first", last_name="last", user_name="user", password=""))
 
     def test_set_username(self):
         self.user.username = 'Kyle'
@@ -94,10 +92,6 @@ class TestUser(unittest.TestCase):
     def test_change_password(self):
         self.user.change_password("234")
         self.assertTrue(self.user.password, "234")
-
-    def test_change_blank_password(self):
-        self.assertFalse(self.user.change_password(""))
-        self.assertTrue(self.user.password, "123")
 
     def test_change_blank_password(self):
         self.assertFalse(self.user.change_password(""))
