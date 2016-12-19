@@ -109,14 +109,14 @@ class TestUser(unittest.TestCase):
         self.assertTrue(self.user.password, "123")
 
     def test_change_no_numbers_password(self):
-        self.assertFalse(self.user.change_password("badpass"))
+        self.assertFalse(self.user.change_password("ba"))
         self.assertTrue(self.user.password, "123")
 
 
 
 class TestQuestion(unittest.TestCase):
     def setUp(self):
-        pass
+        self.student = Student(first_name="first", last_name="last", user_name="user", password="123")
 
     def tearDown(self):
         # self.student_key.delete()
@@ -180,6 +180,13 @@ class TestQuestion(unittest.TestCase):
 
     def test_get_unseen_questions(self):
         self.assertIsNotNone(self.student.get_all_unseen_questions())
+
+    def test_get_url_safe_key(self):
+        self.assertIsNotNone(self.student.get_all_questions()[0].get_url_safe_key())
+
+    def test_get_question_obj_from_url_safe_key(self):
+        self.assertIs(Question().get_question_from_url_safe_key(self.student.get_all_questions()[0].get_url_safe_key()))
+
 
 class TestProfessor(unittest.TestCase):
     def setUp(self):
