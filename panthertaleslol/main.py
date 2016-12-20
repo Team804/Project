@@ -567,7 +567,7 @@ app = webapp2.WSGIApplication([
     ('/adminaccountsettings', AdminAccountSettings),
     ('/protologin', MainHandler),
     ('/questionqueue', QuestionQueue),
-	('/FAQPublic', FAQ),
+	('/FAQPublic', FAQPublic),
     ('/FAQ', FAQ),
     ('/FAQADMIN', FAQADMIN),
     ('/FAQADMIN/D/.*', FAQDelete),
